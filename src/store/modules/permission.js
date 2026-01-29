@@ -10,12 +10,12 @@ const modules = import.meta.glob("./../../views/**/*.vue");
 
 const usePermissionStore = defineStore("permission", {
   state: () => ({
-    routes: [],
-    addRoutes: [],
-    defaultRoutes: [],
-    topbarRouters: [],
-    sidebarRouters: [],
-  }),
+    routes: [],   //扁平化处理的路由   同+异扁平
+    addRoutes: [],  //异扁平
+    defaultRoutes: [],  //默认路由  同+异
+    topbarRouters: [],  //异
+    sidebarRouters: [],   //侧边栏路由  同+异
+  }), 
   actions: {
     setRoutes(routes) {
       this.addRoutes = routes;
@@ -32,27 +32,27 @@ const usePermissionStore = defineStore("permission", {
     },
     generateRoutes(roles) {
       return new Promise((resolve) => {
+        let routeA=dynamicRoutes
         // 向后端请求路由数据
         // getRouters().then(res => {
-        //   const sdata = JSON.parse(JSON.stringify(res.data))
-        //   const rdata = JSON.parse(JSON.stringify(res.data))
-        //   const defaultData = JSON.parse(JSON.stringify(res.data))
-        //   const sidebarRoutes = filterAsyncRouter(sdata)
-        //   const rewriteRoutes = filterAsyncRouter(rdata, false, true)
-        //   const defaultRoutes = filterAsyncRouter(defaultData)
-        //   const asyncRoutes = filterDynamicRoutes(dynamicRoutes)
-        //   asyncRoutes.forEach(route => { router.addRoute(route) })
-        //   this.setRoutes(rewriteRoutes)
-        //   this.setSidebarRouters(constantRoutes.concat(sidebarRoutes))
-        //   this.setDefaultRoutes(sidebarRoutes)
-        //   this.setTopbarRoutes(defaultRoutes)
-        //   resolve(rewriteRoutes)
+          const sdata = JSON.parse(JSON.stringify(routeA))
+          const rdata = JSON.parse(JSON.stringify(routeA))
+          const defaultData = JSON.parse(JSON.stringify(routeA))
+          
+          const sidebarRoutes = filterAsyncRouter(sdata)  // 侧边栏路由（保留 children）
+          const rewriteRoutes = filterAsyncRouter(rdata, false, true)  // 重写路由（扁平化 children）
+          const defaultRoutes = filterAsyncRouter(defaultData)   // 默认路由
+          const asyncRoutes = filterDynamicRoutes(dynamicRoutes)  // 过滤有权限的路由
+          asyncRoutes.forEach(route => { router.addRoute(route) })  // 注册到 Vue Router
+          this.setRoutes(rewriteRoutes)
+          this.setSidebarRouters(constantRoutes.concat(sidebarRoutes))   // ✅ 设置侧边栏菜单
+          this.setDefaultRoutes(sidebarRoutes)
+          this.setTopbarRoutes(defaultRoutes)
+          resolve(rewriteRoutes)
         // })
-        // dynamicRoutes.forEach((route) => {
-        //   router.addRoute(route);
-        // });
-
-        resolve(dynamicRoutes);
+        dynamicRoutes.forEach((route) => {
+          router.addRoute(route);
+        });
       });
     },
   },
