@@ -159,6 +159,34 @@ export const dynamicRoutes = [
   //   ],
   // },
   {
+    name: "Chongqing",
+    path: "/chongQing",
+    hidden: false,
+    redirect: "noRedirect",
+    component: "Layout",
+    alwaysShow: true,
+    meta: {
+      title: "重庆养心殿7大关系管理",
+      icon: "system",
+      noCache: false,
+      link: null,
+    },
+    children: [
+      {
+        name: "Relation",
+        path: "relation",
+        hidden: false,
+        component: "chongQing/relation/index",
+        meta: {
+          title: "关系管理",
+          icon: "user",
+          noCache: false,
+          link: null,
+        },
+      },
+    ],
+  },
+  {
     name: "System",
     path: "/system",
     hidden: false,
