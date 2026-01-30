@@ -250,7 +250,6 @@ function listToString(list, separator) {
 
 // 关闭预览
 function closeViewer() {
-  alert(1)
   dialogImageUrl.value = "";
 }
 
@@ -299,8 +298,14 @@ onMounted(() => {
 :deep(.avatar-uploader-icon) {
   line-height: 120px;
 }
+
 :deep(.el-progress-circle) {
   width: 100% !important;
   height: 100% !important;
+}
+
+:deep(.el-icon--close-tip){
+  display: none;
+  color:transparent
 }
 </style>
