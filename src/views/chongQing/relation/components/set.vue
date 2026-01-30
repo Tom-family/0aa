@@ -6,7 +6,8 @@
         <el-input v-model="form.postName" placeholder="请输入岗位名称" />
       </el-form-item>
       <el-form-item label="小屏关系卡片" prop="postCode">
-        <el-input v-model="form.postCode" placeholder="请输入编码名称" />
+        <!-- <el-input v-model="form.postCode" placeholder="请输入编码名称" /> -->
+        <ImageUpload :limit="2" :updateType="17" v-model="form.topImage" />
       </el-form-item>
       <el-form-item label="大屏关系卡片" prop="postCode">
         <el-input v-model="form.postCode" placeholder="请输入编码名称" />
@@ -33,6 +34,8 @@ const open = ref(true);
 const data = reactive({
   form: {
     postName: "",
+    topImage:
+      "https://xtt-7e79.obs.cn-southwest-2.myhuaweicloud.com:443/590de-check_in/QQ20250917-103407.png,https://xtt-7e79.obs.cn-southwest-2.myhuaweicloud.com:443/590de-check_in/QQ20250917-103407.png",
     postCode: "",
     postSort: "",
   },
@@ -53,7 +56,6 @@ const { form, rules } = toRefs(data);
 
 // 打开弹窗  数据回显
 function show(data) {
-  console.log(data);
   // 标题
   if (data.setType == "edit") {
     title.value = "修改关系";
