@@ -35,9 +35,27 @@
       的文件
     </div>
 
-    <el-dialog v-model="dialogVisible" title="预览" width="800px" append-to-body>
+    <!-- <el-dialog v-model="dialogVisible" title="预览" width="800px" append-to-body>
       <img :src="dialogImageUrl" style="display: block; max-width: 100%; margin: 0 auto" />
-    </el-dialog>
+    </el-dialog> -->
+
+    <!-- 预览 -->
+    <el-image-viewer
+      v-if="dialogImageUrl"
+      show-progress
+      :url-list="[dialogImageUrl]"
+      @close="closeViewer"
+    >
+      <template #viewer-error="{ activeIndex, src }">
+        <div class="image-slot viewer-error">
+          <el-icon><icon-picture /></el-icon>
+          <span>
+            this is viewer-error slot. current index: {{ activeIndex }}. src:
+            {{ src }}
+          </span>
+        </div>
+      </template>
+    </el-image-viewer>
   </div>
 </template>
 
@@ -230,6 +248,12 @@ function listToString(list, separator) {
   return strs != "" ? strs.substr(0, strs.length - 1) : "";
 }
 
+// 关闭预览
+function closeViewer() {
+  alert(1)
+  dialogImageUrl.value = "";
+}
+
 // 初始化拖拽排序
 onMounted(() => {
   if (props.drag && !props.disabled) {
@@ -257,25 +281,25 @@ onMounted(() => {
   display: none !important;
 }
 
-:deep(.el-upload--picture-card){
-    width: 120px;
-    height: 120px;
+:deep(.el-upload--picture-card) {
+  width: 120px;
+  height: 120px;
 }
 
-:deep(.el-upload-list--picture-card .el-upload-list__item){
-    width: 120px;
-    height: 120px;
+:deep(.el-upload-list--picture-card .el-upload-list__item) {
+  width: 120px;
+  height: 120px;
 }
 
-:deep(.el-upload-list--picture-card .el-progress){
+:deep(.el-upload-list--picture-card .el-progress) {
   width: 100px;
   height: 100px;
 }
 
-:deep(.avatar-uploader-icon){
-   line-height: 120px;
+:deep(.avatar-uploader-icon) {
+  line-height: 120px;
 }
-:deep(.el-progress-circle){
+:deep(.el-progress-circle) {
   width: 100% !important;
   height: 100% !important;
 }

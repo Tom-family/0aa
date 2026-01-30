@@ -35,7 +35,7 @@ const data = reactive({
   form: {
     postName: "",
     topImage:
-      "https://xtt-7e79.obs.cn-southwest-2.myhuaweicloud.com:443/590de-check_in/QQ20250917-103407.png,https://xtt-7e79.obs.cn-southwest-2.myhuaweicloud.com:443/590de-check_in/QQ20250917-103407.png",
+      "https://xtt-7e79.obs.cn-southwest-2.myhuaweicloud.com:443/590de-check_in/QQ20250917-103407.png",
     postCode: "",
     postSort: "",
   },
