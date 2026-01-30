@@ -1,6 +1,6 @@
 <template>
   <!-- 添加或修改岗位对话框 -->
-  <el-dialog :title="title" v-model="open" width="600px" append-to-body :show-close="false" :close-on-click-modal="false">
+  <el-dialog :title="title" v-model="open" width="600px" append-to-body :show-close="false" :close-on-click-modal="false" :draggable="true">
     <el-form ref="postRef" :model="form" :rules="rules" label-width="120px">
       <el-form-item label="关系名称" prop="postName">
         <el-input v-model="form.postName" placeholder="请输入岗位名称" />
@@ -27,7 +27,7 @@
 <script setup>
 import { ref, reactive } from "vue";
 const { proxy } = getCurrentInstance();
-const emit = defineEmits(['closeDia'])
+const emit = defineEmits(["closeDia"]);
 const title = ref("新建关系");
 const open = ref(true);
 const data = reactive({
@@ -53,7 +53,16 @@ const { form, rules } = toRefs(data);
 
 // 打开弹窗  数据回显
 function show(data) {
-  if (data.postId) {
+  console.log(data);
+  // 标题
+  if (data.setType == "edit") {
+    title.value = "修改关系";
+  } else if (data.setType == "add") {
+    title.value = "新建关系";
+  } else {
+    title.value = "查看关系";
+  }
+  if (data.setType != "add") {
     for (let key in form.value) {
       form.value[key] = data[key];
     }
@@ -64,14 +73,14 @@ function show(data) {
 function submitForm() {
   proxy.$refs["postRef"].validate((valid) => {
     if (valid) {
-      emit('closeDia',true)
+      emit("closeDia", true);
     }
   });
 }
 
 /** 取消按钮 */
 function cancel() {
-emit('closeDia')
+  emit("closeDia");
 }
 
 // 暴露
