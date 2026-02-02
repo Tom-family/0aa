@@ -48,13 +48,22 @@ export default defineConfig(({ mode, command }) => {
       proxy: {
         // detail: https://cli.vuejs.org/config/#devserver-proxy
         [env.VITE_APP_BASE_API + "/backend"]: {
-          target: `https://test.xintongtong.cn/backend`,
-          // target: 'http://192.168.110.247:8089/backend',
+          // target: `https://test.xintongtong.cn/backend`,
+          target: "http://192.168.110.29:8089/backend",
           // target: `https://s.xintongtong.cn/backend`,
           logLevel: "debug",
           changeOrigin: true,
           // 在 Vite 中不能使用 pathRewrite，必须使用 rewrite 函数。
-          rewrite: (path) => path.replace(new RegExp('^' + env.VITE_APP_BASE_API.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '/backend'), '')
+          rewrite: (path) => path.replace(new RegExp("^" + env.VITE_APP_BASE_API.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "/backend"), ""),
+        },
+        // 静态键：匹配 /dev-api/store/backend 开头的请求
+        [env.VITE_APP_BASE_API + "/store/backend"]: {
+          target: "http://192.168.110.29:8090",
+          changeOrigin: true,
+          rewrite: (path) => {
+            const newPath = path.replace(env.VITE_APP_BASE_API, "");
+            return newPath;
+          },
         },
       },
       disableHostCheck: true,

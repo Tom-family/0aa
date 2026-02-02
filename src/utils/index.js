@@ -387,4 +387,15 @@ export function camelCase(str) {
 export function isNumberStr(str) {
   return /^[+-]?(0|([1-9]\d*))(\.\d+)?$/g.test(str)
 }
+
+// 修改弹窗消息的时候   判断新旧的值是否相等  来判断编辑接口是否要调用
+export function isSubmitData(newData, oldData) {
+  let cansend = true;
+  for (let key in newData) {
+    if (newData[key] != oldData[key]) {
+      cansend = false;
+    }
+  }
+  return cansend
+}
  

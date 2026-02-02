@@ -38,25 +38,19 @@
     <!-- <el-dialog v-model="dialogVisible" title="预览" width="800px" append-to-body>
       <img :src="dialogImageUrl" style="display: block; max-width: 100%; margin: 0 auto" />
     </el-dialog> -->
-
-    <!-- 预览 -->
-    <el-image-viewer
-      v-if="dialogImageUrl"
-      show-progress
-      :url-list="[dialogImageUrl]"
-      @close="closeViewer"
-    >
-      <template #viewer-error="{ activeIndex, src }">
-        <div class="image-slot viewer-error">
-          <el-icon><icon-picture /></el-icon>
-          <span>
-            this is viewer-error slot. current index: {{ activeIndex }}. src:
-            {{ src }}
-          </span>
-        </div>
-      </template>
-    </el-image-viewer>
   </div>
+  <!-- 预览 -->
+  <el-image-viewer v-if="dialogImageUrl" show-progress :url-list="[dialogImageUrl]" @close="closeViewer">
+    <template #viewer-error="{ activeIndex, src }">
+      <div class="image-slot viewer-error">
+        <el-icon><icon-picture /></el-icon>
+        <span>
+          this is viewer-error slot. current index: {{ activeIndex }}. src:
+          {{ src }}
+        </span>
+      </div>
+    </template>
+  </el-image-viewer>
 </template>
 
 <script setup>
@@ -113,7 +107,7 @@ const props = defineProps({
 });
 
 const { proxy } = getCurrentInstance();
-const emit = defineEmits();
+const emit = defineEmits(["fileChange"]);
 const number = ref(0);
 const uploadList = ref([]);
 const dialogImageUrl = ref("");
@@ -220,6 +214,7 @@ function uploadedSuccessfully() {
     uploadList.value = [];
     number.value = 0;
     emit("update:modelValue", listToString(fileList.value));
+    emit('fileChange',true)
     // proxy.$modal.closeLoading();
   }
 }
@@ -304,8 +299,8 @@ onMounted(() => {
   height: 100% !important;
 }
 
-:deep(.el-icon--close-tip){
+:deep(.el-icon--close-tip) {
   display: none;
-  color:transparent
+  color: transparent;
 }
 </style>
