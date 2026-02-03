@@ -210,6 +210,18 @@ export const dynamicRoutes = [
               link: null,
             },
           },
+          {
+            name: "Stage",
+            path: "stage",
+            hidden: false,
+            component: "chongQing/phase/stage/index",
+            meta: {
+              title: "关系阶段管理",
+              icon: "form",
+              noCache: false,
+              link: null,
+            },
+          },
         ],
       },
     ],

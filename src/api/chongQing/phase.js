@@ -35,3 +35,31 @@ export function saSevenRelationSelectSaSevenName() {
   });
 }
 
+// 关系阶段基础分页
+export function saStageBasicQueryPage(data) {
+  return request({
+    url: "/store/backend/saStageBasic/queryPage",
+    method: "post",
+    data: data,
+  });
+}
+
+// 新增阶段基础分页
+export function saStageBasicInsert(data) {
+  return request({
+    url: "/store/backend/saStageBasic/saStageBasicInsert",
+    method: "post",
+    data: data,
+  });
+}
+
+// 新增阶段基础分页
+export function saStageBasicUpdate(data) {
+  return request({
+    url: "/store/backend/saStageBasic/saStageBasicUpdate",
+    method: "post",
+    data: data,
+  });
+}
+
+
