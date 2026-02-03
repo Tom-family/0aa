@@ -184,6 +184,34 @@ export const dynamicRoutes = [
           link: null,
         },
       },
+      {
+        name: "Phase",
+        path: "phase",
+        hidden: false,
+        redirect: "noRedirect",
+        component: "ParentView",
+        alwaysShow: true,
+        meta: {
+          title: "关系阶段管理",
+          icon: "log",
+          noCache: false,
+          link: null,
+        },
+        children: [
+          {
+            name: "Base",
+            path: "base",
+            hidden: false,
+            component: "chongQing/phase/base/index",
+            meta: {
+              title: "关系阶段基础信息管理",
+              icon: "form",
+              noCache: false,
+              link: null,
+            },
+          },
+        ],
+      },
     ],
   },
   {

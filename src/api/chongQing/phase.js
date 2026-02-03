@@ -26,3 +26,12 @@ export function saSevenRelationSaSevenUpdate(data) {
     data: data,
   });
 }
+
+// 七大关系下拉
+export function saSevenRelationSelectSaSevenName() {
+  return request({
+    url: "/store/backend/saSevenRelation/selectSaSevenName",
+    method: "post"
+  });
+}
+

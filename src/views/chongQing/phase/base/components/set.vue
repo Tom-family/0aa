@@ -3,16 +3,15 @@
   <el-dialog :title="title" v-model="open" width="600px" append-to-body :show-close="false" :close-on-click-modal="false" :draggable="true">
     <el-form ref="postRef" :model="form" :rules="rules" label-width="120px">
       <el-form-item label="关系名称" prop="relationName">
-        <el-input :disabled="detailData.setType == 'view'" v-model="form.relationName" placeholder="请输入岗位名称" />
+        <el-select v-model="form.relationName" placeholder="请选择关系名称">
+          <el-option v-for="item in plaseList" :key="item.id" :label="item.name" :value="item.id" />
+        </el-select>
       </el-form-item>
-      <el-form-item label="小屏关系卡片" prop="smallScreenCoverUrl">
-        <ImageUpload :disabled="detailData.setType == 'view'" :limit="1" :updateType="17" v-model="form.smallScreenCoverUrl" @fileChange="changeSmallScreenCoverUrl" />
+      <el-form-item label="关系阶段标题" prop="srSort">
+        <el-input v-model="form.srSort" placeholder="请输入关系阶段标题"/>
       </el-form-item>
-      <el-form-item label="大屏关系卡片" prop="bigScreenCoverUrl">
-        <ImageUpload :disabled="detailData.setType == 'view'" :limit="1" :updateType="17" v-model="form.bigScreenCoverUrl" @fileChange="changeBigScreenCoverUrl" />
-      </el-form-item>
-      <el-form-item label="顺序" prop="srSort">
-        <el-input-number :disabled="detailData.setType == 'view'" v-model="form.srSort" controls-position="right" :min="0" style="width: 100%" />
+      <el-form-item label="关系阶段引导词" prop="work1">
+        <el-input v-model="form.work1" placeholder="请输入关系阶段引导词" type="textarea" :autosize="{ minRows: 3, maxRows: 12 }"/>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -26,7 +25,7 @@
 
 <script setup>
 import { ref, reactive } from "vue";
-import { saSevenRelationSaSevenInsert, saSevenRelationSaSevenUpdate } from "@/api/chongQing/phase.js";
+import { saSevenRelationSaSevenInsert, saSevenRelationSaSevenUpdate,saSevenRelationSelectSaSevenName } from "@/api/chongQing/phase.js";
 import { isSubmitData } from "@/utils/index.js";
 const { proxy } = getCurrentInstance();
 const emit = defineEmits(["closeDia"]);
@@ -34,32 +33,29 @@ const title = ref("新建关系");
 const open = ref(true);
 const buttonLoading = ref(false);
 const detailData = ref(false);
+const plaseList=ref([])
 const data = reactive({
   oldForm: {},
   form: {
     sevenRelationId: "",
     relationName: "", //关系名称
-    smallScreenCoverUrl: "", //小屏关系图
-    bigScreenCoverUrl: "", //大屏关系图
     srSort: "",
+    work1:''
   },
   rules: {
     relationName: [{ required: true, message: "请输入关系名称", trigger: "blur" }],
-    smallScreenCoverUrl: [{ required: true, message: "请选择小屏关系图", trigger: "blur" }],
-    bigScreenCoverUrl: [{ required: true, message: "请选择大屏关系图", trigger: "blur" }],
-    srSort: [{ required: true, message: "请输入排序", trigger: "blur" }],
+    srSort: [{ required: true, message: "请输入阶段标题", trigger: "blur" }],
+    work1: [{ required: true, message: "请输入关系阶段引导词", trigger: "blur" }],
   },
 });
 const { form, rules, oldForm } = toRefs(data);
 
-// 图片选择时  验证小屏关系卡片
-function changeSmallScreenCoverUrl(file) {
-  proxy.$refs["postRef"].validate("smallScreenCoverUrl");
-}
-
-// 图片选择时  验证大屏关系卡片
-function changeBigScreenCoverUrl(file) {
-  proxy.$refs["postRef"].validate("bigScreenCoverUrl");
+// 七大关系下拉
+function getPlaseSelect() {
+  saSevenRelationSelectSaSevenName().then((res) => {
+    console.log(res);
+    plaseList.value = res.data;
+  });
 }
 
 // 打开弹窗  数据回显
@@ -67,11 +63,11 @@ function show(data) {
   detailData.value = data;
   // 标题
   if (data.setType == "edit") {
-    title.value = "修改关系";
+    title.value = "修改关系阶段基础信息";
   } else if (data.setType == "add") {
-    title.value = "新增关系";
+    title.value = "新增关系阶段基础信息";
   } else {
-    title.value = "查看关系";
+    title.value = "查看关系阶段基础信息";
   }
   if (data.setType != "add") {
     for (let key in form.value) {
@@ -121,6 +117,7 @@ function cancel() {
   emit("closeDia");
 }
 
+getPlaseSelect()
 // 暴露
 defineExpose({ show });
 </script>
