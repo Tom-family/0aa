@@ -67,7 +67,7 @@
       <!-- 页脚信息 -->
       <div class="footer">
         <p class="footer-text">探索内心的深度 · 连接真实的自我</p>
-        <p class="copyright">© 2023 MindSpace 心理工作室</p>
+        <p class="copyright">成都云聚教育咨询有限公司</p>
       </div>
     </div>
     
