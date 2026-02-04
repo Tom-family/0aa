@@ -199,7 +199,7 @@ export const dynamicRoutes = [
         },
         children: [
           {
-            name: "Base",
+            name: "PhaseBase",
             path: "base",
             hidden: false,
             component: "chongQing/phase/base/index",
@@ -211,7 +211,7 @@ export const dynamicRoutes = [
             },
           },
           {
-            name: "Stage",
+            name: "PhaseStage",
             path: "stage",
             hidden: false,
             component: "chongQing/phase/stage/index",
@@ -224,34 +224,46 @@ export const dynamicRoutes = [
           },
         ],
       },
-      // {
-      //   name: "Toward",
-      //   path: "toward",
-      //   hidden: false,
-      //   redirect: "noRedirect",
-      //   component: "ParentView",
-      //   alwaysShow: true,
-      //   meta: {
-      //     title: "关系走向管理",
-      //     icon: "log",
-      //     noCache: false,
-      //     link: null,
-      //   },
-      //   children: [
-      //     {
-      //       name: "Base",
-      //       path: "base",
-      //       hidden: false,
-      //       component: "chongQing/toward/base/index",
-      //       meta: {
-      //         title: "关系走向基础信息管理",
-      //         icon: "form",
-      //         noCache: false,
-      //         link: null,
-      //       },
-      //     },
-      //   ],
-      // },
+      {
+        name: "Toward",
+        path: "toward",
+        hidden: false,
+        redirect: "noRedirect",
+        component: "ParentView",
+        alwaysShow: true,
+        meta: {
+          title: "关系走向管理",
+          icon: "log",
+          noCache: false,
+          link: null,
+        },
+        children: [
+          {
+            name: "TowardBase",
+            path: "base",
+            hidden: false,
+            component: "chongQing/toward/base/index",
+            meta: {
+              title: "关系走向基础信息管理",
+              icon: "form",
+              noCache: false,
+              link: null,
+            },
+          },
+          {
+            name: "TowardStage",
+            path: "stage",
+            hidden: false,
+            component: "chongQing/toward/stage/index",
+            meta: {
+              title: "关系走向基础信息管理",
+              icon: "form",
+              noCache: false,
+              link: null,
+            },
+          },
+        ],
+      },
     ],
   },
   {

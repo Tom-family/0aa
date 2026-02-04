@@ -107,7 +107,6 @@ function handleLogin() {
         Cookies.remove("rememberMe");
       }
       // 调用action的登录方法
-      console.log(loginForm.value, 123);
       userStore
         .login(loginForm.value)
         .then(() => {
@@ -120,7 +119,7 @@ function handleLogin() {
           }, {});
           router.push({ path: redirect.value || "/", query: otherQueryParams });
         })
-        .catch(() => {
+        .finally(() => {
           loading.value = false;
           // 重新获取验证码
           // if (captchaEnabled.value) {
