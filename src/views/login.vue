@@ -163,6 +163,7 @@ getCookie();
   height: 100%;
   background: transparent;
   min-width: 750px;
+  min-height: 820px;
 }
 .title {
   margin: 0px auto 30px auto;

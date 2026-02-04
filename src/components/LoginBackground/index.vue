@@ -67,7 +67,7 @@
       <!-- 页脚信息 -->
       <div class="footer">
         <p class="footer-text">探索内心的深度 · 连接真实的自我</p>
-        <p class="copyright">成都云聚教育咨询有限公司</p>
+        <!-- <p class="copyright">成都云聚教育咨询有限公司</p> -->
       </div>
     </div>
     
@@ -181,6 +181,7 @@ onUnmounted(() => {
 <style scoped>
 .psychology-login-container {
   min-width: 750px;
+  min-height: 820px;
   position: fixed;
   top: 0;
   bottom: 0;
