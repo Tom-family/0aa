@@ -181,7 +181,7 @@ getCookie();
 
 .login-form {
   border-radius: 6px;
-  margin-top: 120px;
+  margin-top: 130px;
   width: 400px;
   padding: 25px 25px 5px 25px;
   z-index: 1;

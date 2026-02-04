@@ -389,7 +389,7 @@ onUnmounted(() => {
   max-width: 420px;
   background: rgba(20, 20, 40, 0.7);
   border-radius: 16px;
-  padding: 40px 40px 20px 40px;
+  padding: 30px 40px 20px 40px;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(123, 97, 255, 0.2);
   box-shadow:
@@ -398,7 +398,7 @@ onUnmounted(() => {
     inset 0 0 20px rgba(123, 97, 255, 0.05);
   animation: fadeInUp 1s ease-out 0.3s both;
   margin-bottom: 40px;
-  height: 470px;
+  height: 450px;
 }
 
 .form-placeholder-content {
