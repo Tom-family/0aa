@@ -6,35 +6,25 @@
       <div class="breathing-circle circle-1"></div>
       <div class="breathing-circle circle-2"></div>
       <div class="breathing-circle circle-3"></div>
-      
+
       <!-- 流动粒子 -->
       <div class="particles">
-        <div v-for="(particle, index) in particles" 
-             :key="index" 
-             class="particle"
-             :style="particleStyle(particle)">
-        </div>
+        <div v-for="(particle, index) in particles" :key="index" class="particle" :style="particleStyle(particle)"></div>
       </div>
-      
+
       <!-- 神经连接线 -->
       <div class="neural-network">
         <svg width="100%" height="100%">
-          <path v-for="(path, index) in neuralPaths" 
-                :key="index" 
-                :d="path" 
-                class="neural-path" />
+          <path v-for="(path, index) in neuralPaths" :key="index" :d="path" class="neural-path" />
         </svg>
       </div>
-      
+
       <!-- 浮动思维气泡 -->
-      <div v-for="(bubble, index) in bubbles" 
-           :key="'bubble-'+index" 
-           class="thought-bubble"
-           :style="bubbleStyle(bubble)">
+      <div v-for="(bubble, index) in bubbles" :key="'bubble-' + index" class="thought-bubble" :style="bubbleStyle(bubble)">
         <span class="bubble-text">{{ bubble.text }}</span>
       </div>
     </div>
-    
+
     <!-- 主内容区域 -->
     <div class="main-content">
       <!-- 标题区域 -->
@@ -43,7 +33,7 @@
         <p class="subtitle">欢迎回到内心的宁静空间</p>
         <div class="divider"></div>
       </div>
-      
+
       <!-- 预留的表单区域 -->
       <div class="form-placeholder">
         <!-- 这里将放置登录表单 -->
@@ -51,26 +41,32 @@
           <div class="placeholder-header">
             <div class="form-icon">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M20.5901 22C20.5901 18.13 16.7402 15 12.0002 15C7.26015 15 3.41016 18.13 3.41016 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path
+                  d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path d="M20.5901 22C20.5901 18.13 16.7402 15 12.0002 15C7.26015 15 3.41016 18.13 3.41016 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
             </div>
           </div>
-          
+
           <div class="placeholder-footer">
             <div class="link-placeholder"></div>
             <div class="link-placeholder"></div>
           </div>
         </div>
       </div>
-      
+
       <!-- 页脚信息 -->
       <div class="footer">
         <p class="footer-text">探索内心的深度 · 连接真实的自我</p>
         <!-- <p class="copyright">成都云聚教育咨询有限公司</p> -->
       </div>
     </div>
-    
+
     <!-- 呼吸提示 -->
     <div class="breathing-hint">
       <p>跟随圆圈的节奏，深呼吸...</p>
@@ -84,29 +80,24 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from "vue";
 
 // 粒子数据
-const particles = ref([])
+const particles = ref([]);
 // 思维气泡数据
 const bubbles = ref([
   { x: 15, y: 20, size: 40, text: "完美", delay: 0 },
   { x: 85, y: 30, size: 50, text: "力量", delay: 1 },
   { x: 20, y: 70, size: 45, text: "活泼", delay: 2 },
-  { x: 75, y: 80, size: 35, text: "平和", delay: 3 }
-])
+  { x: 75, y: 80, size: 35, text: "平和", delay: 3 },
+]);
 
 // 神经网络路径
-const neuralPaths = ref([
-  "M10,50 Q50,10 90,50 T170,90",
-  "M30,20 Q60,60 100,30 T150,70",
-  "M70,10 Q110,40 130,20 T180,40",
-  "M20,80 Q60,90 80,60 T140,80"
-])
+const neuralPaths = ref(["M10,50 Q50,10 90,50 T170,90", "M30,20 Q60,60 100,30 T150,70", "M70,10 Q110,40 130,20 T180,40", "M20,80 Q60,90 80,60 T140,80"]);
 
 // 初始化粒子
 const initParticles = () => {
-  const particlesArray = []
+  const particlesArray = [];
   for (let i = 0; i < 40; i++) {
     particlesArray.push({
       x: Math.random() * 100,
@@ -114,11 +105,11 @@ const initParticles = () => {
       size: Math.random() * 4 + 1,
       speed: Math.random() * 0.5 + 0.2,
       opacity: Math.random() * 0.5 + 0.3,
-      direction: Math.random() * Math.PI * 2
-    })
+      direction: Math.random() * Math.PI * 2,
+    });
   }
-  particles.value = particlesArray
-}
+  particles.value = particlesArray;
+};
 
 // 粒子样式
 const particleStyle = (particle) => {
@@ -128,9 +119,9 @@ const particleStyle = (particle) => {
     width: `${particle.size}px`,
     height: `${particle.size}px`,
     opacity: particle.opacity,
-    animationDuration: `${5 / particle.speed}s`
-  }
-}
+    animationDuration: `${5 / particle.speed}s`,
+  };
+};
 
 // 气泡样式
 const bubbleStyle = (bubble) => {
@@ -139,58 +130,59 @@ const bubbleStyle = (bubble) => {
     top: `${bubble.y}%`,
     width: `${bubble.size}px`,
     height: `${bubble.size}px`,
-    animationDelay: `${bubble.delay}s`
-  }
-}
+    animationDelay: `${bubble.delay}s`,
+  };
+};
 
 // 动画循环
-let animationFrameId = null
+let animationFrameId = null;
 const animateParticles = () => {
-  particles.value.forEach(particle => {
+  particles.value.forEach((particle) => {
     // 更新粒子位置
-    particle.x += Math.cos(particle.direction) * particle.speed
-    particle.y += Math.sin(particle.direction) * particle.speed
-    
+    particle.x += Math.cos(particle.direction) * particle.speed;
+    particle.y += Math.sin(particle.direction) * particle.speed;
+
     // 边界检查
-    if (particle.x > 100) particle.x = 0
-    if (particle.x < 0) particle.x = 100
-    if (particle.y > 100) particle.y = 0
-    if (particle.y < 0) particle.y = 100
-    
+    if (particle.x > 100) particle.x = 0;
+    if (particle.x < 0) particle.x = 100;
+    if (particle.y > 100) particle.y = 0;
+    if (particle.y < 0) particle.y = 100;
+
     // 轻微改变方向
-    particle.direction += (Math.random() - 0.5) * 0.1
-  })
-  
-  animationFrameId = requestAnimationFrame(animateParticles)
-}
+    particle.direction += (Math.random() - 0.5) * 0.1;
+  });
+
+  animationFrameId = requestAnimationFrame(animateParticles);
+};
 
 // 组件挂载时初始化
 onMounted(() => {
-  initParticles()
-  animateParticles()
-})
+  initParticles();
+  animateParticles();
+});
 
 // 组件卸载时清理
 onUnmounted(() => {
   if (animationFrameId) {
-    cancelAnimationFrame(animationFrameId)
+    cancelAnimationFrame(animationFrameId);
   }
-})
+});
 </script>
 
 <style scoped>
 .psychology-login-container {
-  min-width: 750px;
-  min-height: 820px;
-  position: fixed;
+  /* min-width: 750px;
+  min-height: 820px; */
+  position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   background: linear-gradient(135deg, #0c0c1d 0%, #1a1a2e 50%, #16213e 100%);
   overflow: hidden;
-  font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
   color: #e0e0e0;
+  z-index:-1;
 }
 
 /* 背景样式 */
@@ -240,7 +232,8 @@ onUnmounted(() => {
 
 /* 呼吸动画 */
 @keyframes breathe {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     opacity: 0.4;
   }
@@ -299,7 +292,8 @@ onUnmounted(() => {
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     stroke-width: 1;
     opacity: 0.1;
   }
@@ -323,7 +317,8 @@ onUnmounted(() => {
 }
 
 @keyframes bubble-float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0) scale(1);
   }
   25% {
@@ -397,14 +392,13 @@ onUnmounted(() => {
   padding: 40px 40px 20px 40px;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(123, 97, 255, 0.2);
-  box-shadow: 
+  box-shadow:
     0 10px 30px rgba(0, 0, 0, 0.3),
     0 0 0 1px rgba(123, 97, 255, 0.1),
     inset 0 0 20px rgba(123, 97, 255, 0.05);
   animation: fadeInUp 1s ease-out 0.3s both;
   margin-bottom: 40px;
   height: 470px;
-
 }
 
 .form-placeholder-content {
@@ -433,9 +427,9 @@ onUnmounted(() => {
   color: #7b61ff;
 }
 
-
 @keyframes pulse-bg {
-  0%, 100% {
+  0%,
+  100% {
     background-color: rgba(30, 30, 60, 0.5);
   }
   50% {
@@ -524,7 +518,8 @@ onUnmounted(() => {
 }
 
 @keyframes dot-breathe {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     opacity: 0.4;
   }

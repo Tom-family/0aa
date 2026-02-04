@@ -42,8 +42,8 @@
     <div class="el-login-footer">
       <span>{{ footerContent }}</span>
     </div>
+    <logoBg />
   </div>
-  <logoBg />
 </template>
 
 <script setup>
@@ -157,6 +157,7 @@ getCookie();
 
 <style lang="scss" scoped>
 .login {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
