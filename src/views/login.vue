@@ -52,7 +52,7 @@ import Cookies from "js-cookie";
 import { encrypt, decrypt } from "@/utils/jsencrypt";
 import useUserStore from "@/store/modules/user";
 import defaultSettings from "@/settings";
-import logoBg from "@/components/LogoBackground/index.vue";
+import logoBg from "@/components/LoginBackground/index.vue";
 
 const title = import.meta.env.VITE_APP_TITLE;
 const footerContent = defaultSettings.footerContent;
