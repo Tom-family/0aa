@@ -44,7 +44,7 @@ export function saStageBasicQueryPage(data) {
   });
 }
 
-// 新增阶段基础分页
+// 新增阶段基础
 export function saStageBasicInsert(data) {
   return request({
     url: "/store/backend/saStageBasic/saStageBasicInsert",
@@ -53,7 +53,7 @@ export function saStageBasicInsert(data) {
   });
 }
 
-// 新增阶段基础分页
+// 修改阶段基础
 export function saStageBasicUpdate(data) {
   return request({
     url: "/store/backend/saStageBasic/saStageBasicUpdate",
@@ -62,4 +62,29 @@ export function saStageBasicUpdate(data) {
   });
 }
 
+// 关系阶段管理
+export function saStageInfoQueryPage(data) {
+  return request({
+    url: "/store/backend/saStageInfo/queryPage",
+    method: "post",
+    data: data,
+  });
+}
 
+// 关系阶段添加
+export function saStageInfoInsert(data) {
+  return request({
+    url: "/store/backend/saStageInfo/saStageInfoInsert",
+    method: "post",
+    data: data,
+  });
+}
+
+// 关系阶段编辑
+export function saStageInfoUpdate(data) {
+  return request({
+    url: "/store/backend/saStageInfo/saStageInfoUpdate",
+    method: "post",
+    data: data,
+  });
+}
