@@ -6,8 +6,8 @@
           <el-option v-for="item in plaseList" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
-      <el-form-item label="关系阶段名称" prop="siStageName">
-        <el-input v-model="queryParams.siStageName" placeholder="请输入关系名称" clearable style="width: 200px" @keyup.enter="handleQuery" />
+      <el-form-item label="关系阶段名称" prop="tbiTrendTitle">
+        <el-input v-model="queryParams.tbiTrendTitle" placeholder="请输入关系名称" clearable style="width: 200px" @keyup.enter="handleQuery" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
@@ -24,12 +24,12 @@
 
     <el-table stripe v-loading="loading" :data="postList">
       <el-table-column label="关系名称" show-overflow-tooltip align="center" prop="relationName" />
-      <el-table-column label="关系阶段名称" show-overflow-tooltip align="center" prop="siStageName" />
-      <el-table-column label="关系走向标题" show-overflow-tooltip align="center" prop="siPeriod" />
-      <el-table-column label="关系走向引导词" show-overflow-tooltip align="center" prop="siSummaryWord" />
-      <el-table-column label="关系走向跳转引导词" show-overflow-tooltip align="center" prop="siDetailDescribe" />
-      <el-table-column label="心通通宣传词" show-overflow-tooltip align="center" prop="siSort" />
-      <el-table-column label="Semmi分析标题" show-overflow-tooltip align="center" prop="siSort" />
+      <el-table-column label="关系阶段名称" show-overflow-tooltip align="center" prop="stageName" min-width="105"/>
+      <el-table-column label="关系走向标题" show-overflow-tooltip align="center" prop="tbiTrendTitle" min-width="105" />
+      <el-table-column label="关系走向引导词" show-overflow-tooltip align="center" prop="trendGuideWord"  min-width="120"/>
+      <el-table-column label="关系走向跳转引导词" show-overflow-tooltip align="center" prop="trendChangePagePrompt" min-width="145"/>
+      <el-table-column label="心通通宣传词" show-overflow-tooltip align="center" prop="xttSlogan" min-width="105" />
+      <el-table-column label="Semmi分析标题" show-overflow-tooltip align="center" prop="semmiAnalyzeTitle" min-width="120"/>
       <el-table-column label="操作" width="200" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row, 'view')">查看</el-button>
@@ -47,7 +47,7 @@
 <script setup>
 import { useTemplateRef, nextTick } from "vue";
 import setDia from "./components/set.vue";
-import { saStageInfoQueryPage, saStageInfoUpdate, saSevenRelationSelectSaSevenName } from "@/api/chongQing/phase.js";
+import { saTrendBasicQueryPage, saTrendBasicUpdate, saSevenRelationSelectSaSevenName } from "@/api/chongQing/phase.js";
 const { proxy } = getCurrentInstance();
 
 const postList = ref([]);
@@ -63,7 +63,7 @@ const data = reactive({
     pageNum: 1,
     pageSize: 10,
     sevenRelationId: undefined,
-    siStageName: undefined,
+    tbiTrendTitle: undefined,
   },
 });
 
@@ -71,7 +71,7 @@ const { queryParams } = toRefs(data);
 /** 查询岗位列表 */
 function getList() {
   loading.value = true;
-  saStageInfoQueryPage(queryParams.value).then((res) => {
+  saTrendBasicQueryPage(queryParams.value).then((res) => {
     postList.value = res.data.records;
     total.value = res.data.total;
     loading.value = false;
@@ -121,10 +121,10 @@ function handleDelete(row) {
     .confirm(`是否确认删除该条数据？`)
     .then(function () {
       let params = {
-        stageInfoId: row.stageInfoId,
-        siIsDel: 1,
+        trendBasicInfoId: row.trendBasicInfoId,
+        tbiIsDel: 1,
       };
-      return saStageInfoUpdate(params);
+      return saTrendBasicUpdate(params);
     })
     .then(() => {
       proxy.$modal.msgSuccess("删除成功");

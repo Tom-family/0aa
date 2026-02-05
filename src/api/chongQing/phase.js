@@ -88,3 +88,42 @@ export function saStageInfoUpdate(data) {
     data: data,
   });
 }
+
+// 关系阶段下拉
+export function selectSiStageName(data) {
+  return request({
+    url: "/store/backend/saStageInfo/selectSiStageName",
+    method: "post",
+    data: data,
+  });
+}
+
+// 关系走向列表
+export function saTrendBasicQueryPage(data) {
+  return request({
+    url: "/store/backend/saTrendBasic/queryPage",
+    method: "post",
+    data: data,
+  });
+}
+
+// 关系走向添加
+export function saTrendBasicInsert(data) {
+  return request({
+    url: "/store/backend/saTrendBasic/saTrendBasicInsert",
+    method: "post",
+    data: data,
+  });
+}
+
+// 关系走向编辑
+export function saTrendBasicUpdate(data) {
+  return request({
+    url: "/store/backend/saTrendBasic/saTrendBasicUpdate",
+    method: "post",
+    data: data,
+  });
+}
+
+
+
