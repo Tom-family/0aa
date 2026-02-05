@@ -1,17 +1,31 @@
 <template>
   <!-- 添加或修改岗位对话框 -->
   <el-dialog :title="title" v-model="open" width="600px" append-to-body :show-close="false" :close-on-click-modal="false" :draggable="true">
-    <el-form ref="postRef" :model="form" :rules="rules" label-width="120px">
+    <el-form ref="postRef" :model="form" :rules="rules" label-width="150px">
       <el-form-item label="关系名称" prop="sevenRelationId">
-        <el-select v-model="form.sevenRelationId" placeholder="请选择关系名称" :disabled="detailData.setType == 'view'">
+        <el-select :disabled="detailData.setType == 'view'" v-model="form.sevenRelationId" placeholder="请选择关系名称">
           <el-option v-for="item in plaseList" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
-      <el-form-item label="关系阶段标题" prop="sbiStageTitle">
-        <el-input v-model="form.sbiStageTitle" :disabled="detailData.setType == 'view'" placeholder="请输入关系阶段标题"/>
+      <el-form-item label="关系阶段名称" prop="siStageName">
+        <el-select :disabled="detailData.setType == 'view'" v-model="form.siStageName" placeholder="请选择关系阶段名称">
+          <el-option v-for="item in plaseList" :key="item.id" :label="item.name" :value="item.id" />
+        </el-select>
       </el-form-item>
-      <el-form-item label="关系阶段引导词" prop="stageGuideWord">
-        <el-input v-model="form.stageGuideWord" :disabled="detailData.setType == 'view'" placeholder="请输入关系阶段引导词" type="textarea" :autosize="{ minRows: 3, maxRows: 12 }"/>
+      <el-form-item label="关系走向标题" prop="work1">
+        <el-input :disabled="detailData.setType == 'view'" v-model="form.work1" placeholder="请输入关系走向标题" />
+      </el-form-item>
+      <el-form-item label="关系走向引导词" prop="siPeriod">
+        <el-input :disabled="detailData.setType == 'view'" v-model="form.siPeriod" placeholder="请输入关系走向引导词" />
+      </el-form-item>
+      <el-form-item label="关系阶段跳转引导词" prop="siSummaryWord">
+        <el-input :disabled="detailData.setType == 'view'" v-model="form.siSummaryWord" placeholder="请输入关系阶段跳转引导词" />
+      </el-form-item>
+      <el-form-item label="心通通宣传词" prop="siDetailDescribe">
+        <el-input :disabled="detailData.setType == 'view'" v-model="form.siDetailDescribe" placeholder="请输入心通通宣传词" type="textarea" :autosize="{ minRows: 3, maxRows: 12 }" />
+      </el-form-item>
+      <el-form-item label="Semmi分析标题" prop="siSort">
+        <el-input :disabled="detailData.setType == 'view'" v-model="form.siSort" placeholder="请输入Semmi分析标题" />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -25,27 +39,35 @@
 
 <script setup>
 import { ref, reactive } from "vue";
-import { saStageBasicInsert, saStageBasicUpdate,saSevenRelationSelectSaSevenName } from "@/api/chongQing/phase.js";
+import { saStageInfoInsert, saStageInfoUpdate, saSevenRelationSelectSaSevenName } from "@/api/chongQing/phase.js";
 import { isSubmitData } from "@/utils/index.js";
 const { proxy } = getCurrentInstance();
 const emit = defineEmits(["closeDia"]);
-const title = ref("新增关系阶段基础信息");
+const title = ref("新建关系");
 const open = ref(true);
 const buttonLoading = ref(false);
 const detailData = ref(false);
-const plaseList=ref([])
+const plaseList = ref([]);
 const data = reactive({
   oldForm: {},
   form: {
-    stageBasicInfoId: "",
+    stageInfoId: "",
     sevenRelationId: "", //关系名称
-    sbiStageTitle: "",
-    stageGuideWord:''
+    siStageName: "", //关系阶段名称
+    work1: "", //关系走向标题
+    siPeriod: "", //关系走向引导词
+    siSummaryWord: "", //关系阶段跳转引导词
+    siDetailDescribe: "", //心通通宣传词
+    siSort: "", //Semmi分析标题
   },
   rules: {
-    sevenRelationId: [{ required: true, message: "请输入关系名称", trigger: "blur" }],
-    sbiStageTitle: [{ required: true, message: "请输入阶段标题", trigger: "blur" }],
-    stageGuideWord: [{ required: true, message: "请输入关系阶段引导词", trigger: "blur" }],
+    sevenRelationId: [{ required: true, message: "请选择关系名称", trigger: "change" }],
+    siStageName: [{ required: true, message: "请选择关系阶段名称", trigger: "change" }],
+    work1: [{ required: true, message: "请输入关系走向标题", trigger: "blur" }],
+    siPeriod: [{ required: true, message: "请输入关系走向引导词", trigger: "blur" }],
+    siSummaryWord: [{ required: true, message: "请输入关系阶段跳转引导词", trigger: "blur" }],
+    siDetailDescribe: [{ required: true, message: "请输入心通通宣传词", trigger: "blur" }],
+    siSort: [{ required: true, message: "请输入Semmi分析标题", trigger: "blur" }],
   },
 });
 const { form, rules, oldForm } = toRefs(data);
@@ -63,11 +85,11 @@ function show(data) {
   detailData.value = data;
   // 标题
   if (data.setType == "edit") {
-    title.value = "修改关系阶段基础信息";
+    title.value = "修改关系走向基础信息";
   } else if (data.setType == "add") {
-    title.value = "新增关系阶段基础信息";
+    title.value = "新增关系走向基础信息";
   } else {
-    title.value = "查看关系阶段基础信息";
+    title.value = "查看关系走向基础信息";
   }
   if (data.setType != "add") {
     for (let key in form.value) {
@@ -82,13 +104,13 @@ async function submitForm() {
   proxy.$refs["postRef"].validate((valid) => {
     if (valid) {
       let params = JSON.parse(JSON.stringify(form.value));
-      if (form.value.stageBasicInfoId) {
+      if (form.value.stageInfoId) {
         if (isSubmitData(params, oldForm.value)) {
           proxy.$modal.msgWarning("未修改无法提交");
           return;
         }
         buttonLoading.value = true;
-        saStageBasicUpdate(params)
+        saStageInfoUpdate(params)
           .then((res) => {
             proxy.$modal.msgSuccess("编辑成功");
             emit("closeDia", true);
@@ -98,8 +120,8 @@ async function submitForm() {
           });
       } else {
         buttonLoading.value = true;
-        delete params.stageBasicInfoId;
-        saStageBasicInsert(params)
+        delete params.stageInfoId;
+        saStageInfoInsert(params)
           .then((res) => {
             proxy.$modal.msgSuccess("添加成功");
             emit("closeDia", true);
@@ -117,7 +139,7 @@ function cancel() {
   emit("closeDia");
 }
 
-getPlaseSelect()
+getPlaseSelect();
 // 暴露
 defineExpose({ show });
 </script>

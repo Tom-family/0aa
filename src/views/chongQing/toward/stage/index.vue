@@ -17,7 +17,7 @@
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button type="primary" plain icon="Plus" @click="handleUpdate({}, 'add')">新增关系阶段</el-button>
+        <el-button type="primary" plain icon="Plus" @click="handleUpdate({}, 'add')">新增关系走向</el-button>
       </el-col>
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -25,10 +25,9 @@
     <el-table stripe v-loading="loading" :data="postList">
       <el-table-column label="关系名称" show-overflow-tooltip align="center" prop="relationName" />
       <el-table-column label="关系阶段名称" show-overflow-tooltip align="center" prop="relationName" />
-      <el-table-column label="时间" show-overflow-tooltip align="center" prop="relationName" />
-      <el-table-column label="概括词语" show-overflow-tooltip align="center" prop="relationName" />
-      <el-table-column label="详细描述" show-overflow-tooltip align="center" prop="relationName" />
-      <el-table-column label="排序" show-overflow-tooltip align="center" prop="srSort" />
+      <el-table-column label="关系走向" show-overflow-tooltip align="center" prop="relationName" />
+      <el-table-column label="关系概括词" show-overflow-tooltip align="center" prop="relationName" />
+      <el-table-column label="详细分析" show-overflow-tooltip align="center" prop="relationName" />
       <el-table-column label="操作" width="200" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row, 'view')">查看</el-button>

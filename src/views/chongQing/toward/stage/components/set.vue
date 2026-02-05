@@ -1,26 +1,49 @@
 <template>
   <!-- 添加或修改岗位对话框 -->
-  <el-dialog :title="title" v-model="open" width="600px" append-to-body :show-close="false" :close-on-click-modal="false" :draggable="true">
-    <el-form ref="postRef" :model="form" :rules="rules" label-width="120px">
+  <el-dialog :title="title" v-model="open" width="800px" append-to-body :show-close="false" :close-on-click-modal="false" :draggable="true">
+    <el-form ref="postRef" :model="form" :rules="rules" label-width="140px">
       <el-form-item label="关系名称" prop="relationName">
         <el-select v-model="form.relationName" placeholder="请选择关系名称">
           <el-option v-for="item in plaseList" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
       <el-form-item label="关系阶段名称" prop="srSort">
-        <el-input v-model="form.srSort" placeholder="请输入关系阶段名称" />
+        <el-select v-model="form.srSort" placeholder="请选择关系阶段名称">
+          <el-option v-for="item in plaseList" :key="item.id" :label="item.name" :value="item.id" />
+        </el-select>
       </el-form-item>
-      <el-form-item label="时间" prop="time">
+      <el-form-item label="关系走向" prop="work1">
+        <el-select v-model="form.work1" placeholder="请选择关系走向">
+          <el-option v-for="item in plaseList" :key="item.id" :label="item.name" :value="item.id" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="关系走向概括词" prop="time">
         <el-input v-model="form.time" placeholder="请输入时间" />
       </el-form-item>
-      <el-form-item label="概括词" prop="work1">
-        <el-input v-model="form.work1" placeholder="请输入概括词" />
-      </el-form-item>
-      <el-form-item label="详细描述" prop="work2">
-        <el-input v-model="form.work2" placeholder="请输入详细描述" type="textarea" :autosize="{ minRows: 3, maxRows: 12 }" />
-      </el-form-item>
-      <el-form-item label="排序" prop="work3">
-        <el-input-number :disabled="detailData.setType == 'view'" v-model="form.work3" controls-position="right" :min="0" style="width: 100%" />
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="关系走向背景图片" prop="work3">
+            <ImageUpload :disabled="detailData.setType == 'view'" :limit="1" :updateType="17" v-model="form.work3" @fileChange="changeSmallScreenCoverUrl1" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="漫画图片1" prop="work4">
+            <ImageUpload :disabled="detailData.setType == 'view'" :limit="1" :updateType="17" v-model="form.work4" @fileChange="changeSmallScreenCoverUrl2" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="漫画图片2" prop="work5">
+            <ImageUpload :disabled="detailData.setType == 'view'" :limit="1" :updateType="17" v-model="form.work5" @fileChange="changeSmallScreenCoverUrl3" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="漫画图片3" prop="work6">
+            <ImageUpload :disabled="detailData.setType == 'view'" :limit="1" :updateType="17" v-model="form.work6" @fileChange="changeSmallScreenCoverUrl4" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-form-item label="详细分析" prop="work2">
+        <el-input v-model="form.work2" placeholder="请输入详细分析" type="textarea" :autosize="{ minRows: 3, maxRows: 12 }" />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -38,7 +61,7 @@ import { saSevenRelationSaSevenInsert, saSevenRelationSaSevenUpdate, saSevenRela
 import { isSubmitData } from "@/utils/index.js";
 const { proxy } = getCurrentInstance();
 const emit = defineEmits(["closeDia"]);
-const title = ref("新建关系");
+const title = ref("新建关系走向");
 const open = ref(true);
 const buttonLoading = ref(false);
 const detailData = ref(false);
@@ -49,18 +72,24 @@ const data = reactive({
     sevenRelationId: "",
     relationName: "", //关系名称
     srSort: "", //关系阶段名称
-    time: "", //时间
-    work1: "", //概括词
-    work2: "", //详细描述
-    work3: "", //排序
+    work1: "", //关系走向
+    time: "", //关系走向概括词
+    work3: "", //关系走向背景图
+    work4: "", //漫画图片1
+    work5: "", //漫画图片2
+    work6: "", //漫画图片3
+    work2: "", //详细分析
   },
   rules: {
     relationName: [{ required: true, message: "请选择关系名称", trigger: "change" }],
-    srSort: [{ required: true, message: "请输入关系阶段名称", trigger: "blur" }],
-    time: [{ required: true, message: "请输入时间", trigger: "blur" }],
-    work1: [{ required: true, message: "请输入概括词", trigger: "blur" }],
-    work2: [{ required: true, message: "请输入详细描述", trigger: "blur" }],
-    work3: [{ required: true, message: "请输入排序", trigger: "blur" }],
+    srSort: [{ required: true, message: "请选择关系阶段名称", trigger: "change" }],
+    work1: [{ required: true, message: "请选择关系走向", trigger: "blur" }],
+    time: [{ required: true, message: "请输关系走向概括词", trigger: "blur" }],
+    work3: [{ required: true, message: "请选择关系走向背景图", trigger: "change" }],
+    work4: [{ required: true, message: "请选择漫画图片1", trigger: "change" }],
+    work5: [{ required: true, message: "请选择漫画图片2", trigger: "change" }],
+    work6: [{ required: true, message: "请选择漫画图片3", trigger: "change" }],
+    work2: [{ required: true, message: "请输入详细分析", trigger: "blur" }],
   },
 });
 const { form, rules, oldForm } = toRefs(data);
@@ -78,11 +107,11 @@ function show(data) {
   detailData.value = data;
   // 标题
   if (data.setType == "edit") {
-    title.value = "修改关系阶段基础信息";
+    title.value = "修改关系走向";
   } else if (data.setType == "add") {
-    title.value = "新增关系阶段基础信息";
+    title.value = "新增关系走向";
   } else {
-    title.value = "查看关系阶段基础信息";
+    title.value = "查看关系走向";
   }
   if (data.setType != "add") {
     for (let key in form.value) {
@@ -125,6 +154,26 @@ async function submitForm() {
       }
     }
   });
+}
+
+// 图片选择时  验证关系走向背景图片
+function changeSmallScreenCoverUrl1() {
+  proxy.$refs["postRef"].validate("work3");
+}
+
+// 图片选择时  验证漫画图片1
+function changeSmallScreenCoverUrl2() {
+  proxy.$refs["postRef"].validate("work4");
+}
+
+// 图片选择时  验证漫画图片2
+function changeSmallScreenCoverUrl3() {
+  proxy.$refs["postRef"].validate("work5");
+}
+
+// 图片选择时  验证漫画图片3
+function changeSmallScreenCoverUrl4() {
+  proxy.$refs["postRef"].validate("work6");
 }
 
 /** 取消按钮 */

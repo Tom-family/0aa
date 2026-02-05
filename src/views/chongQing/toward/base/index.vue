@@ -1,13 +1,13 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch">
-      <el-form-item label="关系阶段名称" prop="sevenRelationId">
+      <el-form-item label="关系名称" prop="sevenRelationId">
         <el-select v-model="queryParams.sevenRelationId" placeholder="请选择关系阶段名称" clearable style="width: 200px">
           <el-option v-for="item in plaseList" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
-      <el-form-item label="关系标题" prop="sbiStageTitle">
-        <el-input v-model="queryParams.sbiStageTitle" placeholder="请输入关系标题" clearable style="width: 200px" @keyup.enter="handleQuery" />
+      <el-form-item label="关系阶段名称" prop="siStageName">
+        <el-input v-model="queryParams.siStageName" placeholder="请输入关系名称" clearable style="width: 200px" @keyup.enter="handleQuery" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
@@ -17,15 +17,19 @@
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button type="primary" plain icon="Plus" @click="handleUpdate({}, 'add')">新增关系阶段基础信息</el-button>
+        <el-button type="primary" plain icon="Plus" @click="handleUpdate({}, 'add')">新增关系走向基础信息</el-button>
       </el-col>
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table stripe v-loading="loading" :data="postList">
       <el-table-column label="关系名称" show-overflow-tooltip align="center" prop="relationName" />
-      <el-table-column label="关系标题" show-overflow-tooltip align="center" prop="sbiStageTitle" />
-      <el-table-column label="关系引导词" show-overflow-tooltip align="center" prop="stageGuideWord" min-width="100"></el-table-column>
+      <el-table-column label="关系阶段名称" show-overflow-tooltip align="center" prop="siStageName" />
+      <el-table-column label="关系走向标题" show-overflow-tooltip align="center" prop="siPeriod" />
+      <el-table-column label="关系走向引导词" show-overflow-tooltip align="center" prop="siSummaryWord" />
+      <el-table-column label="关系走向跳转引导词" show-overflow-tooltip align="center" prop="siDetailDescribe" />
+      <el-table-column label="心通通宣传词" show-overflow-tooltip align="center" prop="siSort" />
+      <el-table-column label="Semmi分析标题" show-overflow-tooltip align="center" prop="siSort" />
       <el-table-column label="操作" width="200" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row, 'view')">查看</el-button>
@@ -43,8 +47,7 @@
 <script setup>
 import { useTemplateRef, nextTick } from "vue";
 import setDia from "./components/set.vue";
-import { saStageBasicQueryPage, saStageBasicUpdate, saSevenRelationSelectSaSevenName } from "@/api/chongQing/phase.js";
-import { RelationStatus, GetLabelByValue } from "@/utils/enumeration.js";
+import { saStageInfoQueryPage, saStageInfoUpdate, saSevenRelationSelectSaSevenName } from "@/api/chongQing/phase.js";
 const { proxy } = getCurrentInstance();
 
 const postList = ref([]);
@@ -60,7 +63,7 @@ const data = reactive({
     pageNum: 1,
     pageSize: 10,
     sevenRelationId: undefined,
-    sbiStageTitle:undefined
+    siStageName: undefined,
   },
 });
 
@@ -68,7 +71,7 @@ const { queryParams } = toRefs(data);
 /** 查询岗位列表 */
 function getList() {
   loading.value = true;
-  saStageBasicQueryPage(queryParams.value).then((res) => {
+  saStageInfoQueryPage(queryParams.value).then((res) => {
     postList.value = res.data.records;
     total.value = res.data.total;
     loading.value = false;
@@ -108,7 +111,6 @@ function closeDia(data) {
 // 七大关系下拉
 function getPlaseSelect() {
   saSevenRelationSelectSaSevenName().then((res) => {
-    console.log(res);
     plaseList.value = res.data;
   });
 }
@@ -119,10 +121,10 @@ function handleDelete(row) {
     .confirm(`是否确认删除该条数据？`)
     .then(function () {
       let params = {
-        stageBasicInfoId: row.stageBasicInfoId,
-        sbiIsDel: 1,
+        stageInfoId: row.stageInfoId,
+        siIsDel: 1,
       };
-      return saStageBasicUpdate(params);
+      return saStageInfoUpdate(params);
     })
     .then(() => {
       proxy.$modal.msgSuccess("删除成功");
