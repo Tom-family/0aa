@@ -264,6 +264,46 @@ export const dynamicRoutes = [
           },
         ],
       },
+      {
+        name: "Test",
+        path: "test",
+        hidden: false,
+        redirect: "noRedirect",
+        component: "ParentView",
+        alwaysShow: true,
+        meta: {
+          title: "测试题管理",
+          icon: "log",
+          noCache: false,
+          link: null,
+        },
+        children: [
+          {
+            name: "TestList",
+            path: "list",
+            hidden: false,
+            component: "chongQing/test/list/index",
+            meta: {
+              title: "测试题列表",
+              icon: "form",
+              noCache: false,
+              link: null,
+            },
+          },
+          // {
+          //   name: "TowardStage",
+          //   path: "stage",
+          //   hidden: false,
+          //   component: "chongQing/toward/stage/index",
+          //   meta: {
+          //     title: "关系走向基础信息管理",
+          //     icon: "form",
+          //     noCache: false,
+          //     link: null,
+          //   },
+          // },
+        ],
+      },
     ],
   },
   {
