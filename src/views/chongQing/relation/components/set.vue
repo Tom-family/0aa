@@ -54,12 +54,12 @@ const { form, rules, oldForm } = toRefs(data);
 
 // 图片选择时  验证小屏关系卡片
 function changeSmallScreenCoverUrl(file) {
-  proxy.$refs["postRef"].validate("smallScreenCoverUrl");
+  proxy.$refs["postRef"].validateField("smallScreenCoverUrl");
 }
 
 // 图片选择时  验证大屏关系卡片
 function changeBigScreenCoverUrl(file) {
-  proxy.$refs["postRef"].validate("bigScreenCoverUrl");
+  proxy.$refs["postRef"].validateField("bigScreenCoverUrl");
 }
 
 // 打开弹窗  数据回显

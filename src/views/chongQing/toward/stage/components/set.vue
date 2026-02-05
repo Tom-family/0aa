@@ -1,6 +1,6 @@
 <template>
   <!-- 添加或修改岗位对话框 -->
-  <el-dialog :title="title" v-model="open" width="800px" append-to-body :show-close="false" :close-on-click-modal="false" :draggable="true">
+  <el-dialog :title="title" v-model="open" width="850px" append-to-body :show-close="false" :close-on-click-modal="false" :draggable="true">
     <el-form ref="postRef" :model="form" :rules="rules" label-width="140px">
       <el-form-item label="关系名称" prop="relationName">
         <el-select v-model="form.relationName" placeholder="请选择关系名称">
@@ -158,22 +158,22 @@ async function submitForm() {
 
 // 图片选择时  验证关系走向背景图片
 function changeSmallScreenCoverUrl1() {
-  proxy.$refs["postRef"].validate("work3");
+  proxy.$refs["postRef"].validateField("work3");
 }
 
 // 图片选择时  验证漫画图片1
 function changeSmallScreenCoverUrl2() {
-  proxy.$refs["postRef"].validate("work4");
+  proxy.$refs["postRef"].validateField("work4");
 }
 
 // 图片选择时  验证漫画图片2
 function changeSmallScreenCoverUrl3() {
-  proxy.$refs["postRef"].validate("work5");
+  proxy.$refs["postRef"].validateField("work5");
 }
 
 // 图片选择时  验证漫画图片3
 function changeSmallScreenCoverUrl4() {
-  proxy.$refs["postRef"].validate("work6");
+  proxy.$refs["postRef"].validateField("work6");
 }
 
 /** 取消按钮 */
