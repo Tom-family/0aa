@@ -1,13 +1,13 @@
 <template>
   <div class="test-container">
-    <el-form ref="postRef" :model="form" :rules="rules" label-width="90px">
+    <el-form ref="postRef" :model="form" :rules="rules" label-width="90px" >
       <el-button type="primary" icon="Edit" style="margin-bottom: 20px">批量添加题目</el-button>
       <div class="text-box" v-for="(item, index) in form.testTopioQuestionsList" :key="index">
-        <el-form-item label="题目编号" :prop="`testTopioQuestionsList.${index}.questionSequence`" :rules="{ required: true, message: '请输入', trigger: 'change' }">
-          <el-input v-model="item.questionSequence" placeholder="请输入测评标题" />
+        <el-form-item label="题目编号" :prop="`testTopioQuestionsList.${index}.questionSequence`" :rules="{ required: true, message: '请输入题目标题', trigger: 'change' }">
+          <el-input v-model="item.questionSequence" placeholder="请输入题目标题" />
         </el-form-item>
-        <el-form-item label="题目内容" :prop="`testTopioQuestionsList.${index}.questionName`" :rules="{ required: true, message: '请输入', trigger: 'change' }">
-          <el-input v-model="item.questionName" placeholder="请输入测评标题" />
+        <el-form-item label="题目内容" :prop="`testTopioQuestionsList.${index}.questionName`" :rules="{ required: true, message: '请输入题目内容', trigger: 'change' }">
+          <el-input v-model="item.questionName" placeholder="请输入题目内容" />
         </el-form-item>
         <el-form-item label="选择类型" prop="questionOption">
           <el-radio-group v-model="item.questionOption">
@@ -17,11 +17,13 @@
             <el-radio :value="4" size="large">填空</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-table :data="item.questionAnswer" border style="width: 100%" :size="'small'">
+        <el-table :data="item.questionAnswer" border style="width: 100%" :size="'small'" class="table-box">
           <el-table-column prop="name1" align="center" label="选项" width="150" />
           <el-table-column prop="name2" align="center" label="内容" width="300">
             <template #default="scope">
-              <el-input v-model="scope.row.content" placeholder="请输入内容" />
+              <el-form-item label="" :prop="`testTopioQuestionsList.${index}.questionAnswer.${scope.$index}.content`" :rules="{ required: true, message: '请输入选项内容', trigger: 'change' }">
+                <el-input v-model="scope.row.content" placeholder="请输入内容" />
+              </el-form-item>
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center">
@@ -51,8 +53,8 @@ const data = reactive({
         questionName: "", //测评标题
         questionOption: 1,
         questionAnswer: [
-          { name1: "选项1", name2: "内容1", title: "A", content: "内容1" },
-          { name1: "选项2", name2: "内容2", title: "B", content: "内容2" },
+          { name1: "选项1", name2: "内容1", title: "A", content: "" },
+          { name1: "选项2", name2: "内容2", title: "B", content: "" },
         ],
       },
       {
@@ -96,7 +98,7 @@ async function submitForm() {
 .test-container {
   width: 100%;
   .el-form-item {
-    margin-bottom: 12px;
+    margin-bottom: 18px;
   }
   .text-box {
     &:first-child {
@@ -108,6 +110,12 @@ async function submitForm() {
     margin-bottom: 20px;
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.12);
     padding: 25px 30px 20px 20px;
+  }
+
+  .table-box {
+    .el-form-item {
+      margin-bottom: 0;
+    }
   }
 }
 </style>
