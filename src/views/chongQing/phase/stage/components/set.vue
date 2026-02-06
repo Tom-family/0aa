@@ -25,7 +25,7 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button type="primary" @click="submitForm" :loading="buttonLoading">确 定</el-button>
+        <el-button type="primary" @click="submitForm" :loading="buttonLoading" v-if="detailData.setType != 'view'">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </template>
