@@ -1,6 +1,6 @@
 <template>
   <!-- 添加或修改岗位对话框 -->
-  <el-dialog :title="title" v-model="open" width="600px" append-to-body :show-close="false" :close-on-click-modal="false" :draggable="true">
+  <el-dialog :title="title" v-model="open" width="800px" append-to-body :show-close="false" :close-on-click-modal="false" :draggable="true">
     <el-form ref="postRef" :model="form" :rules="rules" label-width="120px">
       <el-form-item label="测评标题" prop="relationName">
         <el-input :disabled="detailData.setType == 'view'" v-model="form.relationName" placeholder="请输入测评标题" />
@@ -10,6 +10,9 @@
       </el-form-item>
       <el-form-item label="顺序" prop="srSort">
         <el-input-number :disabled="detailData.setType == 'view'" v-model="form.srSort" controls-position="right" :min="0" style="width: 100%" />
+      </el-form-item>
+      <el-form-item label="测试题目" prop="srSort">
+        <testItem />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -25,6 +28,7 @@
 import { ref, reactive } from "vue";
 import { saSevenRelationSaSevenInsert, saSevenRelationSaSevenUpdate } from "@/api/chongQing/phase.js";
 import { isSubmitData } from "@/utils/index.js";
+import testItem from "./testItem.vue";
 const { proxy } = getCurrentInstance();
 const emit = defineEmits(["closeDia"]);
 const title = ref("新建关系");
