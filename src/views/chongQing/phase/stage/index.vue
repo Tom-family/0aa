@@ -117,7 +117,7 @@ function getPlaseSelect() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   proxy.$modal
-    .confirm(`是否确认删除该条数据？`)
+    .confirm(`删除该关系阶段将会同时删除其下包含的所有关系走向信息，是否确认要删除该关系阶段？`)
     .then(function () {
       let params = {
         stageInfoId: row.stageInfoId,
