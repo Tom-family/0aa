@@ -1,13 +1,13 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch">
-      <el-form-item label="关系名称" prop="name1">
-        <el-select v-model="queryParams.name1" placeholder="请选择关系阶段名称" clearable style="width: 200px">
+      <el-form-item label="关系名称" prop="sevenRelationId">
+        <el-select v-model="queryParams.sevenRelationId" placeholder="请选择关系阶段名称" clearable style="width: 200px">
           <el-option v-for="item in plaseList" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
-      <el-form-item label="关系阶段名称" prop="relationName">
-        <el-input v-model="queryParams.relationName" placeholder="请输入关系名称" clearable style="width: 200px" @keyup.enter="handleQuery" />
+      <el-form-item label="关系阶段名称" prop="tbiTrendTitle">
+        <el-input v-model="queryParams.tbiTrendTitle" placeholder="请输入关系名称" clearable style="width: 200px" @keyup.enter="handleQuery" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
@@ -24,10 +24,16 @@
 
     <el-table stripe v-loading="loading" :data="postList">
       <el-table-column label="关系名称" show-overflow-tooltip align="center" prop="relationName" />
-      <el-table-column label="关系阶段名称" show-overflow-tooltip align="center" prop="relationName" />
-      <el-table-column label="关系走向" show-overflow-tooltip align="center" prop="relationName" />
-      <el-table-column label="关系概括词" show-overflow-tooltip align="center" prop="relationName" />
-      <el-table-column label="详细分析" show-overflow-tooltip align="center" prop="relationName" />
+      <el-table-column label="关系阶段名称" show-overflow-tooltip align="center" prop="stageName" />
+      <el-table-column label="关系走向" show-overflow-tooltip align="center" prop="tiTrendName">
+        <template #default="scope">
+          <el-tag type="primary" v-if="scope.row.tiTrendName == 1">{{ GetLabelByValue(TowardType, scope.row.tiTrendName) }}</el-tag>
+          <el-tag type="success" v-else-if="scope.row.tiTrendName == 2">{{ GetLabelByValue(TowardType, scope.row.tiTrendName) }}</el-tag>
+          <el-tag type="warning" v-else>{{ GetLabelByValue(TowardType, scope.row.tiTrendName) }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="关系走向概括词" show-overflow-tooltip align="center" prop="tiSummaryWord" />
+      <el-table-column label="详细分析" show-overflow-tooltip align="center" prop="tiDetailDescribe" />
       <el-table-column label="操作" width="200" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row, 'view')">查看</el-button>
@@ -45,8 +51,8 @@
 <script setup>
 import { useTemplateRef, nextTick } from "vue";
 import setDia from "./components/set.vue";
-import { saSevenRelationQueryPage, saSevenRelationSaSevenUpdate, saSevenRelationSelectSaSevenName } from "@/api/chongQing/phase.js";
-import { RelationStatus, GetLabelByValue } from "@/utils/enumeration.js";
+import { saTrendQueryPage, saTrendUpdate, saSevenRelationSelectSaSevenName } from "@/api/chongQing/phase.js";
+import { TowardType, GetLabelByValue } from "@/utils/enumeration.js";
 const { proxy } = getCurrentInstance();
 
 const postList = ref([]);
@@ -61,8 +67,8 @@ const data = reactive({
   queryParams: {
     pageNum: 1,
     pageSize: 10,
-    name1: undefined,
-    relationName: undefined,
+    sevenRelationId: undefined,
+    tbiTrendTitle: undefined,
   },
 });
 
@@ -70,7 +76,7 @@ const { queryParams } = toRefs(data);
 /** 查询岗位列表 */
 function getList() {
   loading.value = true;
-  saSevenRelationQueryPage(queryParams.value).then((res) => {
+  saTrendQueryPage(queryParams.value).then((res) => {
     postList.value = res.data.records;
     total.value = res.data.total;
     loading.value = false;
@@ -121,10 +127,10 @@ function handleDelete(row) {
     .confirm(`是否确认删除该条数据？`)
     .then(function () {
       let params = {
-        sevenRelationId: row.sevenRelationId,
-        srPublishStatus: row.srPublishStatus ? 0 : 1,
+        trendInfoId: row.trendInfoId,
+        tiIsDel: 1,
       };
-      return saSevenRelationSaSevenUpdate(params);
+      return saTrendUpdate(params);
     })
     .then(() => {
       proxy.$modal.msgSuccess("删除成功");

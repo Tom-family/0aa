@@ -98,7 +98,7 @@ export function selectSiStageName(data) {
   });
 }
 
-// 关系走向列表
+// 关系走向基础列表
 export function saTrendBasicQueryPage(data) {
   return request({
     url: "/store/backend/saTrendBasic/queryPage",
@@ -107,7 +107,7 @@ export function saTrendBasicQueryPage(data) {
   });
 }
 
-// 关系走向添加
+// 关系走向基础添加
 export function saTrendBasicInsert(data) {
   return request({
     url: "/store/backend/saTrendBasic/saTrendBasicInsert",
@@ -116,7 +116,7 @@ export function saTrendBasicInsert(data) {
   });
 }
 
-// 关系走向编辑
+// 关系走向基础编辑
 export function saTrendBasicUpdate(data) {
   return request({
     url: "/store/backend/saTrendBasic/saTrendBasicUpdate",
@@ -124,6 +124,37 @@ export function saTrendBasicUpdate(data) {
     data: data,
   });
 }
+
+
+// 关系走向管理列表
+export function saTrendQueryPage(data) {
+  return request({
+    url: "/store/backend/saTrend/queryPage",
+    method: "post",
+    data: data,
+  });
+}
+
+// 添加关系走向管理
+export function saTrendInsert(data) {
+  return request({
+    url: "/store/backend/saTrend/saTrendInsert",
+    method: "post",
+    data: data,
+  });
+}
+
+// 编辑关系走向管理
+export function saTrendUpdate(data) {
+  return request({
+    url: "/store/backend/saTrend/saTrendUpdate",
+    method: "post",
+    data: data,
+  });
+}
+
+
+
 
 
 

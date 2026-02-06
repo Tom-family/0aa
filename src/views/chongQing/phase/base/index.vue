@@ -44,7 +44,6 @@
 import { useTemplateRef, nextTick } from "vue";
 import setDia from "./components/set.vue";
 import { saStageBasicQueryPage, saStageBasicUpdate, saSevenRelationSelectSaSevenName } from "@/api/chongQing/phase.js";
-import { RelationStatus, GetLabelByValue } from "@/utils/enumeration.js";
 const { proxy } = getCurrentInstance();
 
 const postList = ref([]);
