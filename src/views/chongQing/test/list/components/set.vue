@@ -1,6 +1,7 @@
 <template>
   <!-- 添加或修改岗位对话框 -->
   <el-dialog :title="title" v-model="open" width="800px" append-to-body :show-close="false" :close-on-click-modal="false" :draggable="true">
+    <div class="dia-box">
     <el-form ref="postRef" :model="form" :rules="rules" label-width="120px">
       <el-form-item label="测评标题" prop="relationName">
         <el-input :disabled="detailData.setType == 'view'" v-model="form.relationName" placeholder="请输入测评标题" />
@@ -15,6 +16,7 @@
         <testItem />
       </el-form-item>
     </el-form>
+    </div>
     <template #footer>
       <div class="dialog-footer">
         <el-button type="primary" @click="submitForm" :loading="buttonLoading">确 定</el-button>
@@ -118,3 +120,10 @@ function cancel() {
 // 暴露
 defineExpose({ show });
 </script>
+
+<style lang="scss" scoped>
+  .dia-box{
+    max-height: 700px;
+    overflow: auto;
+  }
+</style>
