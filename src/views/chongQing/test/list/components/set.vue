@@ -13,7 +13,7 @@
           <el-input-number :disabled="detailData.setType == 'view'" v-model="form.srSort" controls-position="right" :min="0" style="width: 100%" />
         </el-form-item>
         <el-form-item label="测试题目" prop="srSort">
-          <testItem />
+          <testItem ref="questionsRef" />
         </el-form-item>
       </el-form>
     </div>
@@ -37,6 +37,7 @@ const title = ref("新建关系");
 const open = ref(true);
 const buttonLoading = ref(false);
 const detailData = ref(false);
+const questionsRef = ref();
 const data = reactive({
   oldForm: {},
   form: {
@@ -78,9 +79,11 @@ function show(data) {
 }
 
 /** 提交按钮 */
-async function submitForm() {
-  proxy.$refs["postRef"].validate((valid) => {
+function submitForm() {
+  proxy.$refs["postRef"].validate(async (valid) => {
     if (valid) {
+      await questionsRef.value?.getQuestionsvalid();
+
       let params = JSON.parse(JSON.stringify(form.value));
       if (form.value.sevenRelationId) {
         if (isSubmitData(params, oldForm.value)) {

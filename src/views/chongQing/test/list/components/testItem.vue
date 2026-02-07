@@ -48,8 +48,9 @@
           </el-table-column>
         </el-table>
       </div>
-      <el-button type="primary" icon="Edit" @click="addQuestion">添加题目</el-button>
-      <el-button type="primary" icon="Edit" @click="submitForm">保存</el-button>
+      <div class="add-box">
+        <img src="@/assets/images/add.svg" alt="" @click="addQuestion">
+      </div>
     </el-form>
   </div>
 </template>
@@ -147,12 +148,19 @@ function changeType(e, index) {
 }
 
 /** 提交按钮 */
-async function submitForm() {
-  proxy.$refs["postRef"].validate((valid) => {
-    if (valid) {
-    }
+function getQuestionsvalid() {
+  return new Promise((resolve, reject) => {
+    proxy.$refs["postRef"].validate((valid) => {
+      if (valid) {
+        resolve(true);
+      } else {
+        reject(false);
+      }
+    });
   });
 }
+
+defineExpose({ getQuestionsvalid });
 </script>
 
 <style lang="scss" scoped>
@@ -194,8 +202,20 @@ async function submitForm() {
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    margin-top: -4px;
     .add-option {
       margin-bottom: 0 !important;
+    }
+  }
+
+  .add-box{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    img{
+      width: 40px;
+      cursor: pointer;
+      margin-right: 100px;
     }
   }
 }
