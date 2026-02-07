@@ -44,10 +44,10 @@ const data = reactive({
     srSort: "",
   },
   rules: {
-    relationName: [{ required: true, message: "请输入关系名称", trigger: "blur" }],
-    smallScreenCoverUrl: [{ required: true, message: "请选择小屏关系图", trigger: "blur" }],
-    bigScreenCoverUrl: [{ required: true, message: "请选择大屏关系图", trigger: "blur" }],
-    srSort: [{ required: true, message: "请输入排序", trigger: "blur" }],
+    relationName: [{ required: true, message: "请输入关系名称", trigger: ["change", "blur"] }],
+    smallScreenCoverUrl: [{ required: true, message: "请选择小屏关系图", trigger: ["change", "blur"] }],
+    bigScreenCoverUrl: [{ required: true, message: "请选择大屏关系图", trigger: ["change", "blur"] }],
+    srSort: [{ required: true, message: "请输入排序", trigger: ["change", "blur"] }],
   },
 });
 const { form, rules, oldForm } = toRefs(data);

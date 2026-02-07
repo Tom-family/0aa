@@ -46,9 +46,9 @@ const data = reactive({
     srSort: "",
   },
   rules: {
-    relationName: [{ required: true, message: "请输入测评标题", trigger: "blur" }],
-    smallScreenCoverUrl: [{ required: true, message: "请选择封面图", trigger: "blur" }],
-    srSort: [{ required: true, message: "请输入排序", trigger: "blur" }],
+    relationName: [{ required: true, message: "请输入测评标题", trigger: ["change", "blur"] }],
+    smallScreenCoverUrl: [{ required: true, message: "请选择封面图", trigger: ["change", "blur"] }],
+    srSort: [{ required: true, message: "请输入排序", trigger: ["change", "blur"] }],
   },
 });
 const { form, rules, oldForm } = toRefs(data);

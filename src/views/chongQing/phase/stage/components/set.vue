@@ -56,11 +56,11 @@ const data = reactive({
   },
   rules: {
     sevenRelationId: [{ required: true, message: "请选择关系名称", trigger: "change" }],
-    siStageName: [{ required: true, message: "请输入关系阶段名称", trigger: "blur" }],
-    siPeriod: [{ required: true, message: "请输入时间", trigger: "blur" }],
-    siSummaryWord: [{ required: true, message: "请输入概括词", trigger: "blur" }],
-    siDetailDescribe: [{ required: true, message: "请输入详细描述", trigger: "blur" }],
-    siSort: [{ required: true, message: "请输入排序", trigger: "blur" }],
+    siStageName: [{ required: true, message: "请输入关系阶段名称", trigger: ["change", "blur"] }],
+    siPeriod: [{ required: true, message: "请输入时间", trigger: ["change", "blur"] }],
+    siSummaryWord: [{ required: true, message: "请输入概括词", trigger: ["change", "blur"] }],
+    siDetailDescribe: [{ required: true, message: "请输入详细描述", trigger: ["change", "blur"] }],
+    siSort: [{ required: true, message: "请输入排序", trigger: ["change", "blur"] }],
   },
 });
 const { form, rules, oldForm } = toRefs(data);

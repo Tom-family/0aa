@@ -64,11 +64,11 @@ const data = reactive({
   rules: {
     sevenRelationId: [{ required: true, message: "请选择关系名称", trigger: "change" }],
     stageInfoId: [{ required: true, message: "请选择关系阶段名称", trigger: "change" }],
-    tbiTrendTitle: [{ required: true, message: "请输入关系走向标题", trigger: "blur" }],
-    trendGuideWord: [{ required: true, message: "请输入关系走向引导词", trigger: "blur" }],
-    trendChangePagePrompt: [{ required: true, message: "请输入关系阶段跳转引导词", trigger: "blur" }],
-    xttSlogan: [{ required: true, message: "请输入心通通宣传词", trigger: "blur" }],
-    semmiAnalyzeTitle: [{ required: true, message: "请输入Semmi分析标题", trigger: "blur" }],
+    tbiTrendTitle: [{ required: true, message: "请输入关系走向标题", trigger: ["change", "blur"] }],
+    trendGuideWord: [{ required: true, message: "请输入关系走向引导词", trigger: ["change", "blur"] }],
+    trendChangePagePrompt: [{ required: true, message: "请输入关系阶段跳转引导词", trigger: ["change", "blur"] }],
+    xttSlogan: [{ required: true, message: "请输入心通通宣传词", trigger: ["change", "blur"] }],
+    semmiAnalyzeTitle: [{ required: true, message: "请输入Semmi分析标题", trigger: ["change", "blur"] }],
   },
 });
 const { form, rules, oldForm } = toRefs(data);

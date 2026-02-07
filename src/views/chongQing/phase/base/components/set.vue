@@ -43,9 +43,9 @@ const data = reactive({
     stageGuideWord:''
   },
   rules: {
-    sevenRelationId: [{ required: true, message: "请输入关系名称", trigger: "blur" }],
-    sbiStageTitle: [{ required: true, message: "请输入阶段标题", trigger: "blur" }],
-    stageGuideWord: [{ required: true, message: "请输入关系阶段引导词", trigger: "blur" }],
+    sevenRelationId: [{ required: true, message: "请输入关系名称", trigger: ["change", "blur"] }],
+    sbiStageTitle: [{ required: true, message: "请输入阶段标题", trigger: ["change", "blur"] }],
+    stageGuideWord: [{ required: true, message: "请输入关系阶段引导词", trigger: ["change", "blur"] }],
   },
 });
 const { form, rules, oldForm } = toRefs(data);
