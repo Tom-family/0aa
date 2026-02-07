@@ -1,12 +1,12 @@
 <template>
   <div class="test-container">
     <el-form ref="postRef" :model="form" :rules="rules" label-width="90px">
-      <el-button type="primary" icon="Edit" style="margin-bottom: 20px">批量添加题目</el-button>
+      <el-button type="primary" style="margin-bottom: 20px" @click="addMoreTest">批量添加题目</el-button>
       <div class="text-box" v-for="(item, index) in form.testTopioQuestionsList" :key="index">
         <el-form-item label="题目编号" :prop="`testTopioQuestionsList.${index}.questionSequence`" :rules="{ required: true, message: '请输入题目标题', trigger: 'change' }">
           <div class="deldeta-box">
-            <el-input style="width:300px" v-model="item.questionSequence" placeholder="请输入题目标题" />
-            <el-icon :size="18" :color="'red'" @click="deleteQuestion(index)">
+            <el-input style="width: 300px" v-model="item.questionSequence" placeholder="请输入题目标题" />
+            <el-icon :size="18" :color="'red'" @click="deleteQuestion(index)" v-if="form.testTopioQuestionsList.length > 1">
               <Delete />
             </el-icon>
           </div>
@@ -16,18 +16,25 @@
         </el-form-item>
         <el-form-item label="选择类型" prop="questionOption">
           <div class="type-box">
-            <el-radio-group v-model="item.questionOption">
+            <el-radio-group
+              v-model="item.questionOption"
+              @change="
+                (e) => {
+                  changeType(e, index);
+                }
+              "
+            >
               <el-radio :value="1" size="large">单选</el-radio>
               <el-radio :value="2" size="large">多选</el-radio>
               <el-radio :value="3" size="large">非必选</el-radio>
               <el-radio :value="4" size="large">填空</el-radio>
             </el-radio-group>
-            <el-button class="add-option" type="primary" icon="Edit" style="margin-bottom: 20px" @click="addAnswer(index)">添加选项</el-button>
+            <el-button class="add-option" type="primary" style="margin-bottom: 20px" @click="addAnswer(index)">添加选项</el-button>
           </div>
         </el-form-item>
-        <el-table :data="item.questionAnswer" border style="width: 100%" :size="'small'" class="table-box">
+        <el-table :data="item.questionAnswer" border style="width: 100%" :size="'small'" class="table-box" v-if="item.questionOption != 4">
           <el-table-column prop="name1" align="center" label="选项" width="150" />
-          <el-table-column align="center" label="内容" width="300">
+          <el-table-column align="center" label="内容" width="320">
             <template #default="scope">
               <el-form-item label="" :prop="`testTopioQuestionsList.${index}.questionAnswer.${scope.$index}.name2`" :rules="{ required: true, message: '请输入选项内容', trigger: 'change' }">
                 <el-input v-model="scope.row.name2" placeholder="请输入内容" />
@@ -36,7 +43,7 @@
           </el-table-column>
           <el-table-column label="操作" align="center">
             <template #default="scope">
-              <el-button type="danger" :size="'small'" @click="deleteAnswer(index, scope.$index)">删除</el-button>
+              <el-button type="danger" :size="'small'" @click="deleteAnswer(index, scope.$index)" :disabled="item.questionAnswer.length < 2">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -48,6 +55,7 @@
 </template>
 
 <script setup>
+import { ElMessageBox } from "element-plus";
 import { ref, reactive } from "vue";
 const { proxy } = getCurrentInstance();
 const emit = defineEmits(["closeDia"]);
@@ -60,34 +68,36 @@ const data = reactive({
         questionSequence: "",
         questionName: "", //测评标题
         questionOption: 1,
-        questionAnswer: [
-          { name1: "A", name2: "" },
-          { name1: "B", name2: "" },
-          { name1: "C", name2: "" },
-          { name1: "D", name2: "" },
-          { name1: "E", name2: "" },
-        ],
-      },
-      {
-        questionSequence: "",
-        questionName: "", //测评标题
-        questionOption: 1,
-        questionAnswer: [
-          { name1: "A", name2: "" },
-          { name1: "B", name2: "内" },
-        ],
+        questionAnswer: [{ name1: "A", name2: "" }],
       },
     ],
   },
-  rules: {
-    // questionSequence: [{ required: true, message: "请输入测评标题", trigger: "blur" }],
-    // srSort: [{ required: true, message: "请输入排序", trigger: "blur" }],
-  },
+  rules: {},
 });
 const { form, rules, oldForm } = toRefs(data);
 
+// 批量添加
+function addMoreTest() {
+  ElMessageBox.prompt("请输入添加题目数量", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    inputPattern: /^(?:[1-9]|\d{2}|1\d{2}|200)$/,
+    inputErrorMessage: "请输入小于200的正整数",
+    inputPlaceholder: "请输入",
+  }).then(({ value }) => {
+    for (var i = 0; i < value; i++) {
+      form.value.testTopioQuestionsList.push({
+        questionSequence: "",
+        questionName: "", //测评标题
+        questionOption: 1,
+        questionAnswer: [{ name1: "A", name2: "" }],
+      });
+    }
+  });
+}
+
 // 删除题目
-function deleteQuestion(index){
+function deleteQuestion(index) {
   form.value.testTopioQuestionsList.splice(index, 1);
 }
 
@@ -97,7 +107,7 @@ function addQuestion() {
     questionSequence: "",
     questionName: "", //测评标题
     questionOption: 1,
-    questionAnswer: [],
+    questionAnswer: [{ name1: "A", name2: "" }],
   });
 }
 
@@ -105,18 +115,35 @@ function addQuestion() {
 function addAnswer(index) {
   let data = form.value.testTopioQuestionsList[index].questionAnswer;
   let option = { name1: "", name2: "" };
-  option.name1 = String.fromCharCode(65 + data.length + 1);
+  option.name1 = String.fromCharCode(65 + data.length);
   data.push(option);
 }
 
 // 删除选项
 function deleteAnswer(index, index2) {
   let data = form.value.testTopioQuestionsList[index].questionAnswer;
+  if (data.length == 1) {
+    return;
+  }
   data.splice(index2, 1);
   data.forEach((item, index) => {
     // 将索引转换为字母：0->A, 1->B, 2->C...
     item.name1 = String.fromCharCode(65 + index);
   });
+}
+
+const historyType = ref(1);
+// 类型选择的change
+function changeType(e, index) {
+  if (e == 4) {
+    form.value.testTopioQuestionsList[index].questionAnswer = [];
+  }
+  if (historyType.value == 4) {
+    if (e != 4) {
+      form.value.testTopioQuestionsList[index].questionAnswer = [{ name1: "A", name2: "" }];
+    }
+  }
+  historyType.value = e;
 }
 
 /** 提交按钮 */
@@ -157,7 +184,7 @@ async function submitForm() {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    .el-icon{
+    .el-icon {
       cursor: pointer;
     }
   }

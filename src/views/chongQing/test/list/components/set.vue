@@ -2,20 +2,20 @@
   <!-- 添加或修改岗位对话框 -->
   <el-dialog :title="title" v-model="open" width="800px" append-to-body :show-close="false" :close-on-click-modal="false" :draggable="true">
     <div class="dia-box">
-    <el-form ref="postRef" :model="form" :rules="rules" label-width="120px">
-      <el-form-item label="测评标题" prop="relationName">
-        <el-input :disabled="detailData.setType == 'view'" v-model="form.relationName" placeholder="请输入测评标题" />
-      </el-form-item>
-      <el-form-item label="封面图" prop="smallScreenCoverUrl">
-        <ImageUpload :disabled="detailData.setType == 'view'" :limit="1" :updateType="17" v-model="form.smallScreenCoverUrl" @fileChange="changeSmallScreenCoverUrl" />
-      </el-form-item>
-      <el-form-item label="顺序" prop="srSort">
-        <el-input-number :disabled="detailData.setType == 'view'" v-model="form.srSort" controls-position="right" :min="0" style="width: 100%" />
-      </el-form-item>
-      <el-form-item label="测试题目" prop="srSort">
-        <testItem />
-      </el-form-item>
-    </el-form>
+      <el-form ref="postRef" :model="form" :rules="rules" label-width="100px">
+        <el-form-item label="测评标题" prop="relationName">
+          <el-input :disabled="detailData.setType == 'view'" v-model="form.relationName" placeholder="请输入测评标题" />
+        </el-form-item>
+        <el-form-item label="封面图" prop="smallScreenCoverUrl">
+          <ImageUpload :disabled="detailData.setType == 'view'" :limit="1" :updateType="17" v-model="form.smallScreenCoverUrl" @fileChange="changeSmallScreenCoverUrl" />
+        </el-form-item>
+        <el-form-item label="顺序" prop="srSort">
+          <el-input-number :disabled="detailData.setType == 'view'" v-model="form.srSort" controls-position="right" :min="0" style="width: 100%" />
+        </el-form-item>
+        <el-form-item label="测试题目" prop="srSort">
+          <testItem />
+        </el-form-item>
+      </el-form>
     </div>
     <template #footer>
       <div class="dialog-footer">
@@ -122,8 +122,8 @@ defineExpose({ show });
 </script>
 
 <style lang="scss" scoped>
-  .dia-box{
-    max-height: 700px;
-    overflow: auto;
-  }
+.dia-box {
+  max-height: 700px;
+  overflow: auto;
+}
 </style>
