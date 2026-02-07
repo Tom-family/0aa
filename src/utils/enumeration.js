@@ -11,6 +11,12 @@ export const TowardType = [
   { value: 3, label: "事故线" },
 ];
 
+// 测试题状态
+export const TestStatus = [
+  { value: 1, label: "上架" },
+  { value: 2, label: "下架" },
+];
+
 // 导出对应的回显方法
 // primary    success     info   warning   danger
 export function GetLabelByValue(data, value, valueKey = "value", labelKey = "label") {

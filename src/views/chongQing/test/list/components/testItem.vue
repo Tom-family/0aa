@@ -2,22 +2,22 @@
   <div class="test-container">
     <el-form ref="postRef" :model="form" :rules="rules" label-width="90px">
       <el-button type="primary" style="margin-bottom: 20px" @click="addMoreTest">批量添加题目</el-button>
-      <div class="text-box" v-for="(item, index) in form.testTopioQuestionsList" :key="index">
-        <el-form-item label="题目编号" :prop="`testTopioQuestionsList.${index}.questionSequence`" :rules="{ required: true, message: '请输入题目标题', trigger: 'change' }">
+      <div class="text-box" v-for="(item, index) in form.testTopicQuestionsList" :key="index">
+        <el-form-item label="题目编号" :prop="`testTopicQuestionsList.${index}.saQuestionSequence`" :rules="{ required: true, message: '请输入题目标题', trigger: 'change' }">
           <div class="deldeta-box">
-            <el-input style="width: 300px" v-model="item.questionSequence" placeholder="请输入题目标题" />
-            <el-icon :size="18" :color="'red'" @click="deleteQuestion(index)" v-if="form.testTopioQuestionsList.length > 1">
+            <el-input style="width: 300px" v-model="item.saQuestionSequence" placeholder="请输入题目标题" />
+            <el-icon :size="18" :color="'red'" @click="deleteQuestion(index)" v-if="form.testTopicQuestionsList.length > 1">
               <Delete />
             </el-icon>
           </div>
         </el-form-item>
-        <el-form-item label="题目内容" :prop="`testTopioQuestionsList.${index}.questionName`" :rules="{ required: true, message: '请输入题目内容', trigger: 'change' }">
-          <el-input v-model="item.questionName" placeholder="请输入题目内容" />
+        <el-form-item label="题目内容" :prop="`testTopicQuestionsList.${index}.saQuestionName`" :rules="{ required: true, message: '请输入题目内容', trigger: 'change' }">
+          <el-input v-model="item.saQuestionName" placeholder="请输入题目内容" />
         </el-form-item>
-        <el-form-item label="选择类型" prop="questionOption">
+        <el-form-item label="选择类型" prop="saQuestionOption">
           <div class="type-box">
             <el-radio-group
-              v-model="item.questionOption"
+              v-model="item.saQuestionOption"
               @change="
                 (e) => {
                   changeType(e, index);
@@ -32,24 +32,24 @@
             <el-button class="add-option" type="primary" style="margin-bottom: 20px" @click="addAnswer(index)">添加选项</el-button>
           </div>
         </el-form-item>
-        <el-table :data="item.questionAnswer" border style="width: 100%" :size="'small'" class="table-box" v-if="item.questionOption != 4">
-          <el-table-column prop="name1" align="center" label="选项" width="150" />
+        <el-table :data="item.sasaQuestionAnswer" border style="width: 100%" :size="'small'" class="table-box" v-if="item.saQuestionOption != 4">
+          <el-table-column prop="choose" align="center" label="选项" width="150" />
           <el-table-column align="center" label="内容" width="320">
             <template #default="scope">
-              <el-form-item label="" :prop="`testTopioQuestionsList.${index}.questionAnswer.${scope.$index}.name2`" :rules="{ required: true, message: '请输入选项内容', trigger: 'change' }">
-                <el-input v-model="scope.row.name2" placeholder="请输入内容" />
+              <el-form-item label="" :prop="`testTopicQuestionsList.${index}.sasaQuestionAnswer.${scope.$index}.content`" :rules="{ required: true, message: '请输入选项内容', trigger: 'change' }">
+                <el-input v-model="scope.row.content" placeholder="请输入内容" />
               </el-form-item>
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center">
             <template #default="scope">
-              <el-button type="danger" :size="'small'" @click="deleteAnswer(index, scope.$index)" :disabled="item.questionAnswer.length < 2">删除</el-button>
+              <el-button type="danger" :size="'small'" @click="deleteAnswer(index, scope.$index)" :disabled="item.sasaQuestionAnswer.length < 2">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
       </div>
       <div class="add-box">
-        <img src="@/assets/images/add.svg" alt="" @click="addQuestion">
+        <img src="@/assets/images/add.svg" alt="" @click="addQuestion" />
       </div>
     </el-form>
   </div>
@@ -64,12 +64,12 @@ const detailData = ref(false);
 const data = reactive({
   oldForm: {},
   form: {
-    testTopioQuestionsList: [
+    testTopicQuestionsList: [
       {
-        questionSequence: "",
-        questionName: "", //测评标题
-        questionOption: 1,
-        questionAnswer: [{ name1: "A", name2: "" }],
+        saQuestionSequence: "",
+        saQuestionName: "", //测评标题
+        saQuestionOption: 1,
+        sasaQuestionAnswer: [{ choose: "A", content: "" }],
       },
     ],
   },
@@ -87,11 +87,11 @@ function addMoreTest() {
     inputPlaceholder: "请输入",
   }).then(({ value }) => {
     for (var i = 0; i < value; i++) {
-      form.value.testTopioQuestionsList.push({
-        questionSequence: "",
-        questionName: "", //测评标题
-        questionOption: 1,
-        questionAnswer: [{ name1: "A", name2: "" }],
+      form.value.testTopicQuestionsList.push({
+        saQuestionSequence: "",
+        saQuestionName: "", //测评标题
+        saQuestionOption: 1,
+        sasaQuestionAnswer: [{ choose: "A", content: "" }],
       });
     }
   });
@@ -99,37 +99,37 @@ function addMoreTest() {
 
 // 删除题目
 function deleteQuestion(index) {
-  form.value.testTopioQuestionsList.splice(index, 1);
+  form.value.testTopicQuestionsList.splice(index, 1);
 }
 
 // 添加题目
 function addQuestion() {
-  form.value.testTopioQuestionsList.push({
-    questionSequence: "",
-    questionName: "", //测评标题
-    questionOption: 1,
-    questionAnswer: [{ name1: "A", name2: "" }],
+  form.value.testTopicQuestionsList.push({
+    saQuestionSequence: "",
+    saQuestionName: "", //测评标题
+    saQuestionOption: 1,
+    sasaQuestionAnswer: [{ choose: "A", content: "" }],
   });
 }
 
 // 添加选项
 function addAnswer(index) {
-  let data = form.value.testTopioQuestionsList[index].questionAnswer;
-  let option = { name1: "", name2: "" };
-  option.name1 = String.fromCharCode(65 + data.length);
+  let data = form.value.testTopicQuestionsList[index].sasaQuestionAnswer;
+  let option = { choose: "", content: "" };
+  option.choose = String.fromCharCode(65 + data.length);
   data.push(option);
 }
 
 // 删除选项
 function deleteAnswer(index, index2) {
-  let data = form.value.testTopioQuestionsList[index].questionAnswer;
+  let data = form.value.testTopicQuestionsList[index].saQuestionAnswer;
   if (data.length == 1) {
     return;
   }
   data.splice(index2, 1);
   data.forEach((item, index) => {
     // 将索引转换为字母：0->A, 1->B, 2->C...
-    item.name1 = String.fromCharCode(65 + index);
+    item.choose = String.fromCharCode(65 + index);
   });
 }
 
@@ -137,11 +137,11 @@ const historyType = ref(1);
 // 类型选择的change
 function changeType(e, index) {
   if (e == 4) {
-    form.value.testTopioQuestionsList[index].questionAnswer = [];
+    form.value.testTopicQuestionsList[index].saQuestionAnswer = [];
   }
   if (historyType.value == 4) {
     if (e != 4) {
-      form.value.testTopioQuestionsList[index].questionAnswer = [{ name1: "A", name2: "" }];
+      form.value.testTopicQuestionsList[index].saQuestionAnswer = [{ choose: "A", content: "" }];
     }
   }
   historyType.value = e;
@@ -152,12 +152,25 @@ function getQuestionsvalid() {
   return new Promise((resolve, reject) => {
     proxy.$refs["postRef"].validate((valid) => {
       if (valid) {
-        resolve(true);
+        let data=getData();
+        resolve(data);
       } else {
         reject(false);
       }
     });
   });
+}
+
+// 提交数据变形处理
+function getData() {
+  let data = JSON.parse(JSON.stringify(form.value));
+  data.testTopicQuestionsList.forEach((item, index) => {
+    let result = Object.fromEntries(item.sasaQuestionAnswer.map((item) => [item.choose, item.content]));
+    // 将数据 [{ choose: "A", content: "" }]变成{A: "1", B: "2"}格式
+    item.sasaQuestionAnswer = JSON.stringify(result);
+  });
+
+  return data.testTopicQuestionsList;
 }
 
 defineExpose({ getQuestionsvalid });
@@ -208,11 +221,11 @@ defineExpose({ getQuestionsvalid });
     }
   }
 
-  .add-box{
+  .add-box {
     display: flex;
     align-items: center;
     justify-content: center;
-    img{
+    img {
       width: 40px;
       cursor: pointer;
       margin-right: 100px;

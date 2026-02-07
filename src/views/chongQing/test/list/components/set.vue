@@ -3,16 +3,16 @@
   <el-dialog :title="title" v-model="open" width="800px" append-to-body :show-close="false" :close-on-click-modal="false" :draggable="true">
     <div class="dia-box">
       <el-form ref="postRef" :model="form" :rules="rules" label-width="100px">
-        <el-form-item label="测评标题" prop="relationName">
-          <el-input :disabled="detailData.setType == 'view'" v-model="form.relationName" placeholder="请输入测评标题" />
+        <el-form-item label="测评标题" prop="saTestTopic">
+          <el-input :disabled="detailData.setType == 'view'" v-model="form.saTestTopic" placeholder="请输入测评标题" />
         </el-form-item>
-        <el-form-item label="封面图" prop="smallScreenCoverUrl">
-          <ImageUpload :disabled="detailData.setType == 'view'" :limit="1" :updateType="17" v-model="form.smallScreenCoverUrl" @fileChange="changeSmallScreenCoverUrl" />
+        <el-form-item label="封面图" prop="saTestCoverImage">
+          <ImageUpload :disabled="detailData.setType == 'view'" :limit="1" :updateType="17" v-model="form.saTestCoverImage" @fileChange="changesaTestCoverImage" />
         </el-form-item>
-        <el-form-item label="顺序" prop="srSort">
-          <el-input-number :disabled="detailData.setType == 'view'" v-model="form.srSort" controls-position="right" :min="0" style="width: 100%" />
+        <el-form-item label="顺序" prop="saTestSort">
+          <el-input-number :disabled="detailData.setType == 'view'" v-model="form.saTestSort" controls-position="right" :min="0" style="width: 100%" />
         </el-form-item>
-        <el-form-item label="测试题目" prop="srSort">
+        <el-form-item label="测试题目">
           <testItem ref="questionsRef" />
         </el-form-item>
       </el-form>
@@ -28,7 +28,7 @@
 
 <script setup>
 import { ref, reactive } from "vue";
-import { saSevenRelationSaSevenInsert, saSevenRelationSaSevenUpdate } from "@/api/chongQing/phase.js";
+import { saTestTopicInsert, saTestTopicUpdate } from "@/api/chongQing/test.js";
 import { isSubmitData } from "@/utils/index.js";
 import testItem from "./testItem.vue";
 const { proxy } = getCurrentInstance();
@@ -41,22 +41,23 @@ const questionsRef = ref();
 const data = reactive({
   oldForm: {},
   form: {
-    sevenRelationId: "",
-    relationName: "", //测评标题
-    smallScreenCoverUrl: "", //封面图
-    srSort: "",
+    saTestState: 2, //1 上架   2下架
+    saTestId: "",
+    saTestTopic: "", //测评标题
+    saTestCoverImage: "", //封面图
+    saTestSort: "",
   },
   rules: {
-    relationName: [{ required: true, message: "请输入测评标题", trigger: ["change", "blur"] }],
-    smallScreenCoverUrl: [{ required: true, message: "请选择封面图", trigger: ["change", "blur"] }],
-    srSort: [{ required: true, message: "请输入排序", trigger: ["change", "blur"] }],
+    saTestTopic: [{ required: true, message: "请输入测评标题", trigger: ["change", "blur"] }],
+    saTestCoverImage: [{ required: true, message: "请选择封面图", trigger: ["change", "blur"] }],
+    saTestSort: [{ required: true, message: "请输入排序", trigger: ["change", "blur"] }],
   },
 });
 const { form, rules, oldForm } = toRefs(data);
 
 // 图片选择时  验证小屏关系卡片
-function changeSmallScreenCoverUrl(file) {
-  proxy.$refs["postRef"].validateField("smallScreenCoverUrl");
+function changesaTestCoverImage(file) {
+  proxy.$refs["postRef"].validateField("saTestCoverImage");
 }
 
 // 打开弹窗  数据回显
@@ -82,16 +83,19 @@ function show(data) {
 function submitForm() {
   proxy.$refs["postRef"].validate(async (valid) => {
     if (valid) {
-      await questionsRef.value?.getQuestionsvalid();
-
-      let params = JSON.parse(JSON.stringify(form.value));
-      if (form.value.sevenRelationId) {
+      let testTopicQuestionsList = await questionsRef.value?.getQuestionsvalid();
+      let params = JSON.parse(JSON.stringify(form.value))
+      console.log(testTopicQuestionsList,111)
+      console.log(params,222)
+      // return
+      params.testTopicQuestionsList = testTopicQuestionsList;
+      if (form.value.saTestId) {
         if (isSubmitData(params, oldForm.value)) {
           proxy.$modal.msgWarning("未修改无法提交");
           return;
         }
         buttonLoading.value = true;
-        saSevenRelationSaSevenUpdate(params)
+        saTestTopicUpdate(params)
           .then((res) => {
             proxy.$modal.msgSuccess("编辑成功");
             emit("closeDia", true);
@@ -101,8 +105,8 @@ function submitForm() {
           });
       } else {
         buttonLoading.value = true;
-        delete params.sevenRelationId;
-        saSevenRelationSaSevenInsert(params)
+        delete params.saTestId;
+        saTestTopicInsert(params)
           .then((res) => {
             proxy.$modal.msgSuccess("添加成功");
             emit("closeDia", true);
