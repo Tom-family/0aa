@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch">
+    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" @submit.prevent>
       <el-form-item label="关系阶段名称" prop="sevenRelationId">
         <el-select v-model="queryParams.sevenRelationId" placeholder="请选择关系阶段名称" clearable style="width: 200px">
           <el-option v-for="item in plaseList" :key="item.id" :label="item.name" :value="item.id" />

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch">
+    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" @submit.prevent>
       <el-form-item label="测评标题" prop="saTestTopic">
         <el-input v-model="queryParams.saTestTopic" placeholder="请输入关系名称" clearable style="width: 200px" @keyup.enter="handleQuery" />
       </el-form-item>
