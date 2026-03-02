@@ -9,10 +9,16 @@
         <el-form-item label="封面图" prop="saTestCoverImage">
           <ImageUpload :disabled="detailData.setType == 'view'" :limit="1" :updateType="17" v-model="form.saTestCoverImage" @fileChange="changesaTestCoverImage" />
         </el-form-item>
+        <el-form-item label="状态" prop="saTestState">
+          <el-radio-group v-model="form.saTestState" :disabled="detailData.setType == 'view'"> 
+            <el-radio :value="1">上架</el-radio>
+            <el-radio :value="2">下架</el-radio>
+          </el-radio-group>
+        </el-form-item>
         <el-form-item label="顺序" prop="saTestSort">
           <el-input-number :disabled="detailData.setType == 'view'" v-model="form.saTestSort" controls-position="right" :min="0" style="width: 100%" />
         </el-form-item>
-        <el-form-item label="测试题目">
+        <el-form-item label="测试题目" v-if="detailData.setType == 'add'">
           <testItem ref="questionsRef" />
         </el-form-item>
       </el-form>
@@ -83,12 +89,11 @@ function show(data) {
 function submitForm() {
   proxy.$refs["postRef"].validate(async (valid) => {
     if (valid) {
-      let testTopicQuestionsList = await questionsRef.value?.getQuestionsvalid();
-      let params = JSON.parse(JSON.stringify(form.value))
-      console.log(testTopicQuestionsList,111)
-      console.log(params,222)
-      // return
-      params.testTopicQuestionsList = testTopicQuestionsList;
+      let params = JSON.parse(JSON.stringify(form.value));
+      if (!form.value.saTestId) {
+        let testTopicQuestionsList = await questionsRef.value?.getQuestionsvalid();
+        params.testTopicQuestionsList = testTopicQuestionsList;
+      }
       if (form.value.saTestId) {
         if (isSubmitData(params, oldForm.value)) {
           proxy.$modal.msgWarning("未修改无法提交");

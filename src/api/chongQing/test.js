@@ -28,8 +28,8 @@ export function saTestTopicUpdate(data) {
     url: "/store/backend/saTestTopic/saTestTopicUpdate",
     method: "post",
     data: data,
-    headers: {
-      sendDataType:'json'
-    }
+    // headers: {
+    //   sendDataType:'json'
+    // }
   });
 }

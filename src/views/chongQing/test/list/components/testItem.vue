@@ -5,7 +5,7 @@
       <div class="text-box" v-for="(item, index) in form.testTopicQuestionsList" :key="index">
         <el-form-item label="题目编号" :prop="`testTopicQuestionsList.${index}.saQuestionSequence`" :rules="{ required: true, message: '请输入题目标题', trigger: 'change' }">
           <div class="deldeta-box">
-            <el-input style="width: 300px" v-model="item.saQuestionSequence" placeholder="请输入题目标题" />
+            <el-input style="width: 300px" v-model="item.saQuestionSequence" placeholder="请输入题目标题" disabled />
             <el-icon :size="18" :color="'red'" @click="deleteQuestion(index)" v-if="form.testTopicQuestionsList.length > 1">
               <Delete />
             </el-icon>
@@ -32,18 +32,18 @@
             <el-button class="add-option" type="primary" style="margin-bottom: 20px" @click="addAnswer(index)">添加选项</el-button>
           </div>
         </el-form-item>
-        <el-table :data="item.sasaQuestionAnswer" border style="width: 100%" :size="'small'" class="table-box" v-if="item.saQuestionOption != 4">
+        <el-table :data="item.saQuestionAnswer" border style="width: 100%" :size="'small'" class="table-box" v-if="item.saQuestionOption != 4">
           <el-table-column prop="choose" align="center" label="选项" width="150" />
           <el-table-column align="center" label="内容" width="320">
             <template #default="scope">
-              <el-form-item label="" :prop="`testTopicQuestionsList.${index}.sasaQuestionAnswer.${scope.$index}.content`" :rules="{ required: true, message: '请输入选项内容', trigger: 'change' }">
+              <el-form-item label="" :prop="`testTopicQuestionsList.${index}.saQuestionAnswer.${scope.$index}.content`" :rules="{ required: true, message: '请输入选项内容', trigger: 'change' }">
                 <el-input v-model="scope.row.content" placeholder="请输入内容" />
               </el-form-item>
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center">
             <template #default="scope">
-              <el-button type="danger" :size="'small'" @click="deleteAnswer(index, scope.$index)" :disabled="item.sasaQuestionAnswer.length < 2">删除</el-button>
+              <el-button type="danger" :size="'small'" @click="deleteAnswer(index, scope.$index)" :disabled="item.saQuestionAnswer.length < 2">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -66,10 +66,10 @@ const data = reactive({
   form: {
     testTopicQuestionsList: [
       {
-        saQuestionSequence: "",
+        saQuestionSequence: 1,
         saQuestionName: "", //测评标题
         saQuestionOption: 1,
-        sasaQuestionAnswer: [{ choose: "A", content: "" }],
+        saQuestionAnswer: [{ choose: "A", content: "" }],
       },
     ],
   },
@@ -86,12 +86,13 @@ function addMoreTest() {
     inputErrorMessage: "请输入小于200的正整数",
     inputPlaceholder: "请输入",
   }).then(({ value }) => {
+    let length = form.value.testTopicQuestionsList.length;
     for (var i = 0; i < value; i++) {
       form.value.testTopicQuestionsList.push({
-        saQuestionSequence: "",
+        saQuestionSequence: length + i + 1,
         saQuestionName: "", //测评标题
         saQuestionOption: 1,
-        sasaQuestionAnswer: [{ choose: "A", content: "" }],
+        saQuestionAnswer: [{ choose: "A", content: "" }],
       });
     }
   });
@@ -100,21 +101,26 @@ function addMoreTest() {
 // 删除题目
 function deleteQuestion(index) {
   form.value.testTopicQuestionsList.splice(index, 1);
+  // 题目标题排序
+  form.value.testTopicQuestionsList.forEach((item, index) => {
+    item.saQuestionSequence = index + 1;
+  });
 }
 
 // 添加题目
 function addQuestion() {
+  let length = form.value.testTopicQuestionsList.length;
   form.value.testTopicQuestionsList.push({
-    saQuestionSequence: "",
+    saQuestionSequence: length + 1,
     saQuestionName: "", //测评标题
     saQuestionOption: 1,
-    sasaQuestionAnswer: [{ choose: "A", content: "" }],
+    saQuestionAnswer: [{ choose: "A", content: "" }],
   });
 }
 
 // 添加选项
 function addAnswer(index) {
-  let data = form.value.testTopicQuestionsList[index].sasaQuestionAnswer;
+  let data = form.value.testTopicQuestionsList[index].saQuestionAnswer;
   let option = { choose: "", content: "" };
   option.choose = String.fromCharCode(65 + data.length);
   data.push(option);
@@ -152,7 +158,7 @@ function getQuestionsvalid() {
   return new Promise((resolve, reject) => {
     proxy.$refs["postRef"].validate((valid) => {
       if (valid) {
-        let data=getData();
+        let data = getData();
         resolve(data);
       } else {
         reject(false);
@@ -165,9 +171,9 @@ function getQuestionsvalid() {
 function getData() {
   let data = JSON.parse(JSON.stringify(form.value));
   data.testTopicQuestionsList.forEach((item, index) => {
-    let result = Object.fromEntries(item.sasaQuestionAnswer.map((item) => [item.choose, item.content]));
+    let result = Object.fromEntries(item.saQuestionAnswer.map((item) => [item.choose, item.content]));
     // 将数据 [{ choose: "A", content: "" }]变成{A: "1", B: "2"}格式
-    item.sasaQuestionAnswer = JSON.stringify(result);
+    item.saQuestionAnswer = JSON.stringify(result);
   });
 
   return data.testTopicQuestionsList;
