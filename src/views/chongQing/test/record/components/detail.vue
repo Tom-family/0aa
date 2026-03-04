@@ -4,7 +4,7 @@
     <el-card class="header">
       <div class="card-header">
         <div class="header-box">
-          <span>用户昵称：</span>
+          <span>测试用户：</span>
           {{ detailData.userName || "-" }}
         </div>
         <div class="header-box">
@@ -24,7 +24,7 @@
     <el-card class="card-content">
       <div class="answer-title">测试答案</div>
       <div class="answer-box">
-        <div class="answer-item" v-for="(value, key) in detailData.saResultAnswer" :key="key">
+        <div class="answer-item" v-for="(value, key) in detailData.saResultAnswer" :key="key" @click="tapDetail(key, value)">
           <div class="answer-left">{{ key }}</div>
           <div class="answer-right">{{ value }}</div>
         </div>
@@ -38,22 +38,51 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </template>
+
+    <el-dialog v-model="detailVisible" width="600" title="答案详情" append-to-body :draggable="true" >
+      <div v-loading="detailLoading">
+        <div class="detail-box">
+          <div class="detail-title">题目编号：</div>
+          <div>{{ questionDetail.saQuestionSequence }}</div>
+        </div>
+        <div class="detail-box">
+          <div class="detail-title">题目内容：</div>
+          <div>{{ questionDetail.saQuestionName }}</div>
+        </div>
+        <div class="detail-box" v-if="questionDetail.saQuestionOption != 4">
+          <div class="detail-title">题目选项：</div>
+          <div v-if="questionDetail.content">
+            <div v-for="(value, key) in questionDetail.content" :key="key" style="margin-bottom: 4px">
+              {{ key }}：
+              {{ value }}
+            </div>
+          </div>
+          <div v-else>-</div>
+        </div>
+        <div class="detail-box">
+          <div class="detail-title">答案：</div>
+          <div>{{ questionDetail.answer }}</div>
+        </div>
+      </div>
+    </el-dialog>
   </el-dialog>
 </template>
 
 <script setup>
 import { ref, reactive } from "vue";
-import { saTestTopicInsert, saTestTopicUpdate } from "@/api/chongQing/test.js";
+import { selectTopicQuestion } from "@/api/chongQing/test.js";
 import { isSubmitData } from "@/utils/index.js";
 const { proxy } = getCurrentInstance();
 const emit = defineEmits(["closeDia"]);
 const title = ref("新建关系");
 const open = ref(true);
 const detailData = ref(false);
+const detailVisible = ref(false);
+const questionDetail = ref({});
+const detailLoading = ref(false);
 
 // 打开弹窗  数据回显
 function show(data) {
-  console.log(data, 999);
   detailData.value = JSON.parse(JSON.stringify(data));
   if (detailData.value.saResultAnswer) {
     detailData.value.saResultAnswer = JSON.parse(detailData.value.saResultAnswer);
@@ -61,6 +90,26 @@ function show(data) {
     detailData.value.saResultAnswer = {};
   }
   console.log(detailData.value.saResultAnswer, 999);
+}
+
+function tapDetail(key, value) {
+  detailLoading.value = true;
+  let params = {
+    saResultTestId: detailData.value.saResultTestId,
+    saQuestionSequence: key,
+  };
+  detailVisible.value = true;
+  selectTopicQuestion(params).then((res) => {
+    questionDetail.value = {
+      saQuestionName: res.data.saQuestionName, //题目
+      saQuestionSequence: res.data.saQuestionSequence, //编号
+      answer: value, //答案
+      content: JSON.parse(res.data.saQuestionAnswer), //选项内容
+      saQuestionOption: res.data.saQuestionOption, //题目类型 1单选 2多选 3非必选 4问答
+    };
+  }).finally(() => {
+    detailLoading.value = false;
+  });
 }
 
 /** 取消按钮 */
@@ -110,6 +159,7 @@ defineExpose({ show });
     // justify-content: space-between;
     flex-wrap: wrap;
     .answer-item {
+      cursor: pointer;
       border: 1px solid #eee;
       margin-top: 10px;
       width: 30%;
@@ -141,12 +191,21 @@ defineExpose({ show });
         -webkit-box-orient: vertical;
       }
     }
-    .empty-box{
+    .empty-box {
       width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
     }
+  }
+}
+
+.detail-box {
+  margin-block: 15px;
+  display: flex;
+  .detail-title {
+    color: #409eff;
+    flex-shrink: 0;
   }
 }
 

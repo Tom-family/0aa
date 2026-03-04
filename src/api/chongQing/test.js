@@ -42,3 +42,41 @@ export function saTestResultsQueryPage(data) {
     data: data,
   });
 }
+
+// 导出答卷
+export function exportTestExamResultDetail(data) {
+  return request({
+    url: "/store/backend/saTestResults/exportTestExamResultDetail",
+    method: "post",
+    data: data,
+    responseType:'blob'
+  });
+}
+
+
+// 通过用户手机号与用户的名称绑定用户到测试记录中
+export function userAccNumAndUserNameBind(data) {
+  return request({
+    url: "/store/backend/saTestResults/userAccNumAndUserNameBind",
+    method: "post",
+    data: data,
+  });
+}
+
+// 根据手机号查询用户信息
+export function accNumSelectUser(data) {
+  return request({
+    url: "/store/backend/saTestResults/accNumSelectUser",
+    method: "post",
+    data: data,
+  });
+}
+
+// 查看每一道题目的详情
+export function selectTopicQuestion(data) {
+  return request({
+    url: "/store/backend/saTestResults/selectTopicQuestion",
+    method: "post",
+    data: data,
+  })
+}

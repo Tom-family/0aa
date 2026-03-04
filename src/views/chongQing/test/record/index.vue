@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" @submit.prevent>
-      <el-form-item label="用户名" prop="userName">
+      <el-form-item label="测试用户" prop="userName">
         <el-input v-model="queryParams.userName" placeholder="请输入用户名" clearable style="width: 200px" @keyup.enter="handleQuery" />
       </el-form-item>
       <el-form-item label="联系方式" prop="userAccnum">
@@ -22,17 +22,16 @@
     </el-row>
 
     <el-table stripe v-loading="loading" :data="postList">
-      <el-table-column label="测评标题" show-overflow-tooltip align="center" prop="saTestTopic" />
-      <el-table-column label="测试用户" show-overflow-tooltip align="center" prop="userAccnum">
-      </el-table-column>
+      <el-table-column label="测评标题" show-overflow-tooltip align="center" prop="saTestTopic" min-width="200"/>
+      <el-table-column label="测试用户" show-overflow-tooltip align="center" prop="userName"></el-table-column>
       <el-table-column label="联系方式" show-overflow-tooltip align="center" prop="userAccnum" />
       <el-table-column label="提交时间" show-overflow-tooltip align="center" prop="saResultCreateTime" />
       <el-table-column label="操作" width="200" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-button link type="primary" icon="Edit" @click="handleDetail(scope.row)">查看详情</el-button>
-          <el-button link type="primary" icon="Edit" @click="handleResult(scope.row)">查看结果</el-button>
-          <el-button style="margin-left: 0" link type="primary" icon="Edit" @click="exportAnswer(scope.row)">导出答卷</el-button>
-          <el-button link type="primary" icon="Edit" @click="handleBind(scope.row)">绑定用户</el-button>
+          <el-button link type="primary" icon="View" @click="handleDetail(scope.row)">查看详情</el-button>
+          <el-button link type="primary" icon="View" @click="handleResult(scope.row)">查看结果</el-button>
+          <el-button style="margin-left: 0" link type="primary" icon="Document" @click="exportAnswer(scope.row)">导出答卷</el-button>
+          <el-button link type="primary" icon="Avatar" @click="handleBind(scope.row)" v-if="scope.row.userAccnum">绑定用户</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -52,7 +51,7 @@ import { useTemplateRef, nextTick } from "vue";
 import bindDia from "./components/bind.vue";
 import detailDia from "./components/detail.vue";
 import resultDia from "./components/result.vue";
-import { saTestResultsQueryPage, saTestTopicUpdate } from "@/api/chongQing/test.js";
+import { saTestResultsQueryPage, exportTestExamResultDetail } from "@/api/chongQing/test.js";
 import { TestStatus, GetLabelByValue } from "@/utils/enumeration.js";
 const { proxy } = getCurrentInstance();
 
@@ -120,10 +119,9 @@ async function handleResult(row) {
 
 /** 修改按钮操作 */
 async function handleBind(row) {
-  let data = { ...row };
   bindDom.value = true;
   await nextTick();
-  bindRef.value?.show(data);
+  bindRef.value?.show(row);
 }
 
 function closeDia(data) {
@@ -136,11 +134,11 @@ function closeDia(data) {
 // 导出答卷
 function exportAnswer(row) {
   exportTestExamResultDetail({
-    resultId: row.resultId,
+    saResultId: row.saResultId,
   }).then((res) => {
     console.log(res);
     const blob = new Blob([res], { type: "application/octet-stream" });
-    const filename = `${row.username}_${row.accnum}.xlsx`;
+    const filename = `${row.saTestTopic}_${row.userAccnum}.xlsx`;
     if (typeof window.navigator.msSaveBlob !== "undefined") {
       window.navigator.msSaveBlob(blob, filename);
     } else {
@@ -160,24 +158,5 @@ function exportAnswer(row) {
   });
 }
 
-/** 删除按钮操作 */
-function handleDelete(row) {
-  let text = row.saTestState == 1 ? "下架" : "上架";
-  proxy.$modal
-    .confirm(`是否确认${text}该条数据？`)
-    .then(function () {
-      let params = {
-        saTestId: row.saTestId,
-        saTestState: row.saTestState == 1 ? 2 : 1,
-      };
-      return saTestTopicUpdate(params);
-    })
-    .then(() => {
-      let text = row.saTestState == 1 ? "下架成功" : "上架成功";
-      proxy.$modal.msgSuccess(text);
-      getList();
-    })
-    .catch(() => {});
-}
 getList();
 </script>

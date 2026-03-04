@@ -80,7 +80,9 @@ defineExpose({ show });
   margin-top: -45px;
 }
 .dia-box {
-  padding-top: 10px;
+  max-height: 650px;
+  overflow: auto;
+  margin-top: 10px;
   img {
     width: 100%;
   }
