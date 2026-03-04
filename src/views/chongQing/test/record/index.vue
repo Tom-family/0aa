@@ -22,7 +22,7 @@
     </el-row>
 
     <el-table stripe v-loading="loading" :data="postList">
-      <el-table-column label="测评标题" show-overflow-tooltip align="center" prop="saTestTopic" min-width="200"/>
+      <el-table-column label="测评标题" show-overflow-tooltip align="center" prop="saTestTopic" min-width="200" />
       <el-table-column label="测试用户" show-overflow-tooltip align="center" prop="userName"></el-table-column>
       <el-table-column label="联系方式" show-overflow-tooltip align="center" prop="userAccnum" />
       <el-table-column label="提交时间" show-overflow-tooltip align="center" prop="saResultCreateTime" />
@@ -31,7 +31,7 @@
           <el-button link type="primary" icon="View" @click="handleDetail(scope.row)">查看详情</el-button>
           <el-button link type="primary" icon="View" @click="handleResult(scope.row)">查看结果</el-button>
           <el-button style="margin-left: 0" link type="primary" icon="Document" @click="exportAnswer(scope.row)">导出答卷</el-button>
-          <el-button link type="primary" icon="Avatar" @click="handleBind(scope.row)" v-if="scope.row.userAccnum">绑定用户</el-button>
+          <el-button link type="primary" icon="Avatar" @click="handleBind(scope.row)" v-if="!scope.row.userAccnum">绑定用户</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -138,7 +138,12 @@ function exportAnswer(row) {
   }).then((res) => {
     console.log(res);
     const blob = new Blob([res], { type: "application/octet-stream" });
-    const filename = `${row.saTestTopic}_${row.userAccnum}.xlsx`;
+    let filename = "";
+    if (row.userAccnum) {
+      filename = `${row.saTestTopic}_${row.userAccnum}.xlsx`;
+    } else {
+      filename = `${row.saTestTopic}.xlsx`;
+    }
     if (typeof window.navigator.msSaveBlob !== "undefined") {
       window.navigator.msSaveBlob(blob, filename);
     } else {
