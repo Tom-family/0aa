@@ -6,7 +6,7 @@
     </div>
 
     <div class="dia-box">
-      <img src="https://img2.baidu.com/it/u=2376489989,3127732063&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=657" alt="" />
+      <img :src="detailData.saTestDetailImage" alt="" />
     </div>
     <template #footer>
       <div class="dialog-footer">
@@ -26,17 +26,37 @@ const emit = defineEmits(["closeDia"]);
 const open = ref(true);
 const detailData = ref(false);
 
+// 打印
 function tapPrint() {
-  print({
-    // 可以传单个URL字符串，也可以传URL数组
-    printable: ["https://img2.baidu.com/it/u=2376489989,3127732063&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=657"],
-    type: "image",
-    imageStyle: "width:100%", // 自定义图片样式
-    documentTitle: "xxx的测试结果", // 打印文档的标题
-    header: "XXX的测评结果", // 如果需要自定义标题，可以用这个
-    css: "/multpointreport.scss",
-    headerStyle: 'font-size: 20px; color: #1890ff; text-align: center; margin: 20px 0; font-weight: bold; border-bottom: 2px solid #ccc; padding-bottom: 10px;',
-  });
+  let htmlContent = "";
+  const imageUrl = detailData.value.saTestDetailImage;
+  const img = new Image();
+  img.src = imageUrl;
+  img.onload = () => {
+    if (detailData.value.userAccnum) {
+      let phone = detailData.value.userAccnum.slice(-4);
+      htmlContent = `
+        <div class="print-title">用户手机尾号${phone}</div>
+        <div class="print-img">
+          <img src="${detailData.value.saTestDetailImage}" />
+        </div>
+    `;
+    } else {
+      htmlContent = `
+        <div class="print-img">
+          <img src="${detailData.value.saTestDetailImage}" />
+        </div>
+    `;
+    }
+
+    print({
+      printable: htmlContent,
+      type: "raw-html",
+      header: "用户手机尾号0810", // 如果需要自定义标题，可以用这个
+      css: "/multpointreport.scss",
+      headerStyle: "font-size: 12px;",
+    });
+  };
 }
 // 打开弹窗  数据回显
 function show(data) {

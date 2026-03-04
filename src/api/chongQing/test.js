@@ -33,3 +33,12 @@ export function saTestTopicUpdate(data) {
     // }
   });
 }
+
+// 测试记录分页
+export function saTestResultsQueryPage(data) {
+  return request({
+    url: "/store/backend/saTestResults/queryPage",
+    method: "post",
+    data: data,
+  });
+}

@@ -5,224 +5,31 @@
       <div class="card-header">
         <div class="header-box">
           <span>用户昵称：</span>
-          99hklhkljhhklhkjlhkhgsdhjkdhjk999
+          {{ detailData.userName || "-" }}
         </div>
         <div class="header-box">
           <span>测试题：</span>
-          hhdfhfsdhfkjsdhfkdfkhfhdfksdfkjsdfjk
+          {{ detailData.saTestTopic || "-" }}
         </div>
         <div class="header-box">
           <span>联系电话：</span>
-          16666666666
+          {{ detailData.userAccnum || "-" }}
         </div>
         <div class="header-box">
           <span>测试时间：</span>
-          2020-12-12 12:12:12
+          {{ detailData.saResultCreateTime || "-" }}
         </div>
       </div>
     </el-card>
     <el-card class="card-content">
       <div class="answer-title">测试答案</div>
       <div class="answer-box">
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
+        <div class="answer-item" v-for="(value, key) in detailData.saResultAnswer" :key="key">
+          <div class="answer-left">{{ key }}</div>
+          <div class="answer-right">{{ value }}</div>
         </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww18348242384wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
-        </div>
-        <div class="answer-item">
-          <div class="answer-left">1</div>
-          <div class="answer-right">18348242384</div>
+        <div class="empty-box">
+          <el-empty description="暂无数据" v-if="JSON.stringify(detailData.saResultAnswer) == '{}'" />
         </div>
       </div>
     </el-card>
@@ -246,7 +53,14 @@ const detailData = ref(false);
 
 // 打开弹窗  数据回显
 function show(data) {
-  detailData.value = data;
+  console.log(data, 999);
+  detailData.value = JSON.parse(JSON.stringify(data));
+  if (detailData.value.saResultAnswer) {
+    detailData.value.saResultAnswer = JSON.parse(detailData.value.saResultAnswer);
+  } else {
+    detailData.value.saResultAnswer = {};
+  }
+  console.log(detailData.value.saResultAnswer, 999);
 }
 
 /** 取消按钮 */
@@ -280,7 +94,7 @@ defineExpose({ show });
 .card-content {
   margin-top: 20px;
   margin-bottom: 10px;
-  max-height: 420px;
+  max-height: 480px;
   overflow: auto;
   .answer-title {
     font-size: 16px;
@@ -326,6 +140,12 @@ defineExpose({ show });
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
       }
+    }
+    .empty-box{
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
 }
