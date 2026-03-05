@@ -28,7 +28,7 @@
       <el-table-column label="关系引导词" show-overflow-tooltip align="center" prop="stageGuideWord" min-width="100"></el-table-column>
       <el-table-column label="操作" width="200" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row, 'view')">查看</el-button>
+          <el-button link type="primary" icon="View" @click="handleUpdate(scope.row, 'view')">查看</el-button>
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row, 'edit')">修改</el-button>
           <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
         </template>

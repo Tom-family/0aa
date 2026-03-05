@@ -2,7 +2,7 @@
   <!-- 添加或修改岗位对话框 -->
   <el-dialog title="测试结果" v-model="open" width="600px" append-to-body :show-close="false" :close-on-click-modal="false" :draggable="true">
     <div class="print-box">
-      <el-button type="primary" @click="tapPrint" class="print">打印</el-button>
+      <el-button type="primary" icon="Printer" @click="tapPrint" class="print">打印</el-button>
     </div>
 
     <div class="dia-box">
