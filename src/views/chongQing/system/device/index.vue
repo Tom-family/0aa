@@ -1,8 +1,20 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" @submit.prevent>
-      <el-form-item label="版本号" prop="versionNum">
-        <el-input v-model="queryParams.versionNum" placeholder="请输入版本号" clearable style="width: 200px" @keyup.enter="handleQuery" />
+      <el-form-item label="设备类型" prop="deviceStyle">
+        <el-select v-model="queryParams.deviceStyle" placeholder="请选择设备类型" clearable style="width: 200px">
+          <el-option v-for="item in DeviceType" :key="item.value" :label="item.label" :value="item.value" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="门店名称" prop="storeName">
+        <el-select v-model="queryParams.storeName" placeholder="请选择门店名称" clearable style="width: 200px">
+          <el-option v-for="item in DeviceType" :key="item.value" :label="item.label" :value="item.value" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="设备状态" prop="dDeviceState">
+        <el-select v-model="queryParams.dDeviceState" placeholder="请选择设备状态" clearable style="width: 200px">
+          <el-option v-for="item in DeviceStatus" :key="item.value" :label="item.label" :value="item.value" />
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
@@ -11,26 +23,38 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button type="primary" plain icon="Plus" @click="handleUpdate({})">新增版本</el-button>
-      </el-col>
+      <el-col :span="1.5"></el-col>
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table stripe v-loading="loading" :data="postList">
-      <el-table-column label="版本号" show-overflow-tooltip align="center" prop="versionNum" />
-      <el-table-column label="备注" show-overflow-tooltip align="center" prop="versionRemark"></el-table-column>
-      <el-table-column label="上传时间" show-overflow-tooltip align="center" prop="vcreateTime" min-width="100"></el-table-column>
-      <el-table-column label="上传人" show-overflow-tooltip align="center" prop="workName" />
-      <el-table-column label="状态" show-overflow-tooltip align="center" prop="versionState">
+      <el-table-column label="设备标识符" show-overflow-tooltip align="center" prop="deviceIdentifier"/>
+      <el-table-column label="设备类型" show-overflow-tooltip align="center" prop="deviceStyle">
         <template #default="scope">
-          <el-tag type="danger" v-if="scope.row.versionState == 2">{{ GetLabelByValue(VersionStatus, scope.row.versionState) }}</el-tag>
-          <el-tag type="success" v-else>{{ GetLabelByValue(VersionStatus, scope.row.versionState) }}</el-tag>
+          <el-tag type="warning" v-if="scope.row.deviceStyle == 1">{{ GetLabelByValue(DeviceType, scope.row.deviceStyle) }}</el-tag>
+          <el-tag type="success" v-else>{{ GetLabelByValue(DeviceType, scope.row.deviceStyle) }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="200" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="门店名称" show-overflow-tooltip align="center" prop="storeName" min-width="100"></el-table-column>
+      <el-table-column label="申请时间" show-overflow-tooltip align="center" prop="saResultCreateTime" />
+      <el-table-column label="审核时间" show-overflow-tooltip align="center" prop="saApproverTime" />
+      <el-table-column label="状态" show-overflow-tooltip align="center" prop="ddeviceState"  width="90">
         <template #default="scope">
-          <el-button link type="primary" icon="View" @click="tapDetail(scope.row)">查看详情</el-button>
+          <el-tag type="primary" v-if="scope.row.ddeviceState == 1">{{ GetLabelByValue(DeviceStatus, scope.row.ddeviceState) }}</el-tag>
+          <el-tag type="success" v-else-if="scope.row.ddeviceState == 2">{{ GetLabelByValue(DeviceStatus, scope.row.ddeviceState) }}</el-tag>
+          <el-tag type="danger" v-else>{{ GetLabelByValue(DeviceStatus, scope.row.ddeviceState) }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="备注" show-overflow-tooltip align="center" prop="deviceRemark" />
+      <el-table-column label="操作" width="300" align="center" class-name="small-padding fixed-width">
+        <template #default="scope">
+          <div style="text-align: left">
+            <el-button link type="primary" icon="View" @click="handleUpdate(scope.row, 'view')">查看详情</el-button>
+            <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row, 'edit')" v-if="scope.row.ddeviceState != 3">编辑</el-button>
+            <el-button link type="success" icon="CircleCheck" @click="tapPass(scope.row, 2)" v-if="scope.row.ddeviceState == 1">通过</el-button>
+            <el-button link type="danger" icon="CircleClose" @click="tapPass(scope.row, 3)" v-if="scope.row.ddeviceState == 1">拒绝</el-button>
+            <el-button link type="danger" icon="CircleClose" @click="tapDelete(scope.row)" v-if="scope.row.ddeviceState == 2">删除</el-button>
+          </div>
         </template>
       </el-table-column>
     </el-table>
@@ -45,8 +69,9 @@
 import { useTemplateRef, nextTick } from "vue";
 import detailDia from "./components/detail.vue";
 import setDia from "./components/set.vue";
-import { saVersionQueryPage } from "@/api/chongQing/system.js";
-import { VersionStatus, GetLabelByValue } from "@/utils/enumeration.js";
+import { saDeviceEquipmentQueryPage } from "@/api/chongQing/system.js";
+import { saDeviceUpdate } from "@/api/chongQing/system.js";
+import { DeviceType, DeviceStatus, GetLabelByValue } from "@/utils/enumeration.js";
 const { proxy } = getCurrentInstance();
 
 const postList = ref([]);
@@ -62,7 +87,9 @@ const data = reactive({
   queryParams: {
     pageNum: 1,
     pageSize: 10,
-    versionNum: undefined,
+    deviceStyle: undefined,
+    storeName: undefined,
+    dDeviceState: undefined,
   },
 });
 
@@ -70,7 +97,7 @@ const { queryParams } = toRefs(data);
 /** 查询岗位列表 */
 function getList() {
   loading.value = true;
-  saVersionQueryPage(queryParams.value).then((res) => {
+  saDeviceEquipmentQueryPage(queryParams.value).then((res) => {
     postList.value = res.data.records;
     total.value = res.data.total;
     loading.value = false;
@@ -90,8 +117,11 @@ function resetQuery() {
 }
 
 /** 修改按钮操作 */
-async function handleUpdate() {
-  let data = {};
+async function handleUpdate(row, type) {
+  let data = {
+    ...row,
+    setType: type,
+  };
   setDom.value = true;
   await nextTick();
   setRef.value?.show(data);
@@ -108,6 +138,43 @@ async function tapDetail(row) {
   detailDom.value = true;
   await nextTick();
   detailRef.value?.show(row);
+}
+
+/** 通过/拒绝 */
+function tapPass(row, status) {
+  let text = status == 2 ? "是否确认通过该条数据？" : "是否确认拒绝该条数据？";
+  proxy.$modal
+    .confirm(`${text}`)
+    .then(function () {
+      let params = {
+        deviceId: row.deviceId,
+        dDeviceState: status,
+      };
+      return saDeviceUpdate(params);
+    })
+    .then(() => {
+      proxy.$modal.msgSuccess("操作成功");
+      getList();
+    })
+    .catch(() => {});
+}
+
+/** 删除 */
+function tapDelete(row) {
+  proxy.$modal
+    .confirm(`是否确认删除该条数据？`)
+    .then(function () {
+      let params = {
+        deviceId: row.deviceId,
+        dIsDel: 1,
+      };
+      return saDeviceUpdate(params);
+    })
+    .then(() => {
+      proxy.$modal.msgSuccess("删除成功");
+      getList();
+    })
+    .catch(() => {});
 }
 
 getList();

@@ -17,3 +17,21 @@ export function saSysVersionInsert(data) {
     data: data,
   });
 }
+
+// 设备管理分页
+export function saDeviceEquipmentQueryPage(data) {
+  return request({
+    url: "/store/backend/saDeviceEquipment/queryPage",
+    method: "post",
+    data: data,
+  });
+}
+
+// 设备管理修改
+export function saDeviceUpdate(data) {
+  return request({
+    url: "/store/backend/saDeviceEquipment/saDeviceUpdate",
+    method: "post",
+    data: data,
+  });
+}

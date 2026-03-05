@@ -331,7 +331,7 @@ export const dynamicRoutes = [
             },
           },
           {
-            name: "DeviceVersion",
+            name: "SystemDevice",
             path: "device",
             hidden: false,
             component: "chongQing/system/device/index",
