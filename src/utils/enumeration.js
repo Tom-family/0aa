@@ -17,6 +17,12 @@ export const TestStatus = [
   { value: 2, label: "下架" },
 ];
 
+// 版本状态
+export const VersionStatus = [
+  { value: 1, label: "生效中" },
+  { value: 2, label: "已过期" },
+];
+
 // 导出对应的回显方法
 // primary    success     info   warning   danger
 export function GetLabelByValue(data, value, valueKey = "value", labelKey = "label") {
