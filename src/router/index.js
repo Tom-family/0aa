@@ -167,7 +167,7 @@ export const dynamicRoutes = [
     alwaysShow: true,
     meta: {
       title: "重庆养心殿7大关系管理",
-      icon: "system",
+      icon: "management",
       noCache: false,
       link: null,
     },
@@ -179,7 +179,7 @@ export const dynamicRoutes = [
         component: "chongQing/relation/index",
         meta: {
           title: "关系管理",
-          icon: "user",
+          icon: "relation",
           noCache: false,
           link: null,
         },
@@ -193,7 +193,7 @@ export const dynamicRoutes = [
         alwaysShow: true,
         meta: {
           title: "关系阶段管理",
-          icon: "log",
+          icon: "phase",
           noCache: false,
           link: null,
         },
@@ -205,7 +205,7 @@ export const dynamicRoutes = [
             component: "chongQing/phase/base/index",
             meta: {
               title: "关系阶段基础信息管理",
-              icon: "form",
+              icon: "base",
               noCache: false,
               link: null,
             },
@@ -217,7 +217,7 @@ export const dynamicRoutes = [
             component: "chongQing/phase/stage/index",
             meta: {
               title: "关系阶段管理",
-              icon: "form",
+              icon: "period",
               noCache: false,
               link: null,
             },
@@ -233,7 +233,7 @@ export const dynamicRoutes = [
         alwaysShow: true,
         meta: {
           title: "关系走向管理",
-          icon: "log",
+          icon: "toward",
           noCache: false,
           link: null,
         },
@@ -245,7 +245,7 @@ export const dynamicRoutes = [
             component: "chongQing/toward/base/index",
             meta: {
               title: "关系走向基础信息管理",
-              icon: "form",
+              icon: "base",
               noCache: false,
               link: null,
             },
@@ -257,7 +257,7 @@ export const dynamicRoutes = [
             component: "chongQing/toward/stage/index",
             meta: {
               title: "关系走向管理",
-              icon: "form",
+              icon: "period",
               noCache: false,
               link: null,
             },
@@ -273,7 +273,7 @@ export const dynamicRoutes = [
         alwaysShow: true,
         meta: {
           title: "测试题管理",
-          icon: "log",
+          icon: "test",
           noCache: false,
           link: null,
         },
@@ -285,7 +285,7 @@ export const dynamicRoutes = [
             component: "chongQing/test/list/index",
             meta: {
               title: "测试题列表",
-              icon: "form",
+              icon: "list",
               noCache: false,
               link: null,
             },
@@ -297,7 +297,7 @@ export const dynamicRoutes = [
             component: "chongQing/test/record/index",
             meta: {
               title: "测试记录",
-              icon: "form",
+              icon: "log",
               noCache: false,
               link: null,
             },
@@ -313,7 +313,7 @@ export const dynamicRoutes = [
         alwaysShow: true,
         meta: {
           title: "系统管理",
-          icon: "log",
+          icon: "system",
           noCache: false,
           link: null,
         },
@@ -325,7 +325,7 @@ export const dynamicRoutes = [
             component: "chongQing/system/version/index",
             meta: {
               title: "版本管理",
-              icon: "form",
+              icon: "version",
               noCache: false,
               link: null,
             },
