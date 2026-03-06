@@ -7,9 +7,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="门店名称" prop="storeName">
-        <el-select v-model="queryParams.storeName" placeholder="请选择门店名称" clearable style="width: 200px">
-          <el-option v-for="item in DeviceType" :key="item.value" :label="item.label" :value="item.value" />
-        </el-select>
+        <el-input v-model="queryParams.storeName" placeholder="请输入门店名称" clearable style="width: 200px" @keyup.enter="handleQuery" />
       </el-form-item>
       <el-form-item label="设备状态" prop="dDeviceState">
         <el-select v-model="queryParams.dDeviceState" placeholder="请选择设备状态" clearable style="width: 200px">
