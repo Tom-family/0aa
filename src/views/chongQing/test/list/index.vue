@@ -30,7 +30,7 @@
       <el-table-column label="操作" width="200" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button link type="primary" icon="View" @click="handleUpdate(scope.row, 'view')">查看</el-button>
-          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row, 'edit')">修改</el-button>
+          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row, 'edit')">编辑</el-button>
           <el-button link :type="scope.row.saTestState == 1 ? 'danger' : 'success'" icon="PriceTag" @click="handleDelete(scope.row)">
             {{ GetLabelByValue(TestStatus, scope.row.saTestState == 1 ? 2 : 1) }}
           </el-button>
@@ -88,7 +88,7 @@ function resetQuery() {
   handleQuery();
 }
 
-/** 修改按钮操作 */
+/** 编辑按钮操作 */
 async function handleUpdate(row, type) {
   let data = {
     ...row,

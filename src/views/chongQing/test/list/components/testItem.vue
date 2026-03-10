@@ -29,7 +29,7 @@
               <el-radio :value="3" size="large">非必选</el-radio>
               <el-radio :value="4" size="large">填空</el-radio>
             </el-radio-group>
-            <el-button class="add-option" type="primary" style="margin-bottom: 20px" @click="addAnswer(index)">添加选项</el-button>
+            <el-button class="add-option" type="primary" style="margin-bottom: 20px" @click="addAnswer(index)" v-if="item.saQuestionOption != 4">添加选项</el-button>
           </div>
         </el-form-item>
         <el-table :data="item.saQuestionAnswer" border style="width: 100%" :size="'small'" class="table-box" v-if="item.saQuestionOption != 4">

@@ -160,7 +160,7 @@ function tapPass(row, status) {
 /** 删除 */
 function tapDelete(row) {
   proxy.$modal
-    .confirm(`是否确认删除该条数据？`)
+    .confirm(`您确定删除该记录吗？`)
     .then(function () {
       let params = {
         deviceId: row.deviceId,

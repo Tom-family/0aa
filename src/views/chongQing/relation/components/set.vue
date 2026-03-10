@@ -88,7 +88,7 @@ async function submitForm() {
       let params = JSON.parse(JSON.stringify(form.value));
       if (form.value.sevenRelationId) {
         if (isSubmitData(params, oldForm.value)) {
-          proxy.$modal.msgWarning("未编辑无法提交");
+          proxy.$modal.msgWarning("未修改无法提交");
           return;
         }
         buttonLoading.value = true;

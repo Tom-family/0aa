@@ -28,10 +28,12 @@
       <el-table-column label="提交时间" show-overflow-tooltip align="center" prop="saResultCreateTime" />
       <el-table-column label="操作" width="200" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-button link type="primary" icon="View" @click="handleDetail(scope.row)">查看详情</el-button>
-          <el-button link type="primary" icon="View" @click="handleResult(scope.row)">查看结果</el-button>
-          <el-button style="margin-left: 0" link type="primary" icon="Document" @click="exportAnswer(scope.row)">导出答卷</el-button>
-          <el-button link type="primary" icon="Avatar" @click="handleBind(scope.row)" v-if="!scope.row.userAccnum">绑定用户</el-button>
+          <div style="text-align: left">
+            <el-button link type="primary" icon="View" @click="handleDetail(scope.row)">查看详情</el-button>
+            <el-button link type="primary" icon="View" @click="handleResult(scope.row)">查看结果</el-button>
+            <el-button style="margin-left: 0" link type="primary" icon="Document" @click="exportAnswer(scope.row)">导出答卷</el-button>
+            <el-button link type="primary" icon="Avatar" @click="handleBind(scope.row)" v-if="!scope.row.userAccnum">绑定用户</el-button>
+          </div>
         </template>
       </el-table-column>
     </el-table>

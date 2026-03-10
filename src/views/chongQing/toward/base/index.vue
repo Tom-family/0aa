@@ -27,13 +27,13 @@
       <el-table-column label="关系阶段名称" show-overflow-tooltip align="center" prop="stageName" min-width="105"/>
       <el-table-column label="关系走向标题" show-overflow-tooltip align="center" prop="tbiTrendTitle" min-width="105" />
       <el-table-column label="关系走向引导词" show-overflow-tooltip align="center" prop="trendGuideWord"  min-width="120"/>
-      <el-table-column label="关系走向跳转引导词" show-overflow-tooltip align="center" prop="trendChangePagePrompt" min-width="145"/>
+      <el-table-column label="关系阶段跳转引导词" show-overflow-tooltip align="center" prop="trendChangePagePrompt" min-width="145"/>
       <el-table-column label="心通通宣传词" show-overflow-tooltip align="center" prop="xttSlogan" min-width="105" />
       <el-table-column label="Semmi分析标题" show-overflow-tooltip align="center" prop="semmiAnalyzeTitle" min-width="120"/>
       <el-table-column label="操作" width="200" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button link type="primary" icon="View" @click="handleUpdate(scope.row, 'view')">查看</el-button>
-          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row, 'edit')">修改</el-button>
+          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row, 'edit')">编辑</el-button>
           <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -90,7 +90,7 @@ function resetQuery() {
   handleQuery();
 }
 
-/** 修改按钮操作 */
+/** 编辑按钮操作 */
 async function handleUpdate(row, type) {
   let data = {
     ...row,

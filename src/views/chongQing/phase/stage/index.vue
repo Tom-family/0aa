@@ -26,9 +26,13 @@
       <el-table-column label="关系名称" show-overflow-tooltip align="center" prop="relationName" />
       <el-table-column label="关系阶段名称" show-overflow-tooltip align="center" prop="siStageName" min-width="105" />
       <el-table-column label="时间" show-overflow-tooltip align="center" prop="siPeriod" />
-      <el-table-column label="概括词语" show-overflow-tooltip align="center" prop="siSummaryWord">
+      <el-table-column label="概括词1" show-overflow-tooltip align="center" prop="siSummaryWord">
         <template #default="scope">
           <div>{{ scope.row.siSummaryWord.split('\n')[0] }}</div>
+        </template>
+      </el-table-column>
+      <el-table-column label="概括词2" show-overflow-tooltip align="center" prop="siSummaryWord">
+        <template #default="scope">
           <div>{{ scope.row.siSummaryWord.split('\n')[1] }}</div>
         </template>
       </el-table-column>
@@ -37,7 +41,7 @@
       <el-table-column label="操作" width="200" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button link type="primary" icon="View" @click="handleUpdate(scope.row, 'view')">查看</el-button>
-          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row, 'edit')">修改</el-button>
+          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row, 'edit')">编辑</el-button>
           <el-button link type="danger" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -94,7 +98,7 @@ function resetQuery() {
   handleQuery();
 }
 
-/** 修改按钮操作 */
+/** 编辑按钮操作 */
 async function handleUpdate(row, type) {
   let data = {
     ...row,

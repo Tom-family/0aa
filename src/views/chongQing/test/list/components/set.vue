@@ -1,5 +1,5 @@
 <template>
-  <!-- 添加或修改岗位对话框 -->
+  <!-- 添加或编辑岗位对话框 -->
   <el-dialog :title="title" v-model="open" width="800px" append-to-body :show-close="false" :close-on-click-modal="false" :draggable="true">
     <div class="dia-box">
       <el-form ref="postRef" :model="form" :rules="rules" label-width="100px">
@@ -71,7 +71,7 @@ function show(data) {
   detailData.value = data;
   // 标题
   if (data.setType == "edit") {
-    title.value = "修改测评";
+    title.value = "编辑测评";
   } else if (data.setType == "add") {
     title.value = "新增测评";
   } else {

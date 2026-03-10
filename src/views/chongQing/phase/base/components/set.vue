@@ -1,5 +1,5 @@
 <template>
-  <!-- 添加或修改岗位对话框 -->
+  <!-- 添加或编辑岗位对话框 -->
   <el-dialog :title="title" v-model="open" width="600px" append-to-body :show-close="false" :close-on-click-modal="false" :draggable="true">
     <el-form ref="postRef" :model="form" :rules="rules" label-width="130px">
       <el-form-item label="关系名称" prop="sevenRelationId">
@@ -63,7 +63,7 @@ function show(data) {
   detailData.value = data;
   // 标题
   if (data.setType == "edit") {
-    title.value = "修改关系阶段基础信息";
+    title.value = "编辑关系阶段基础信息";
   } else if (data.setType == "add") {
     title.value = "新增关系阶段基础信息";
   } else {
