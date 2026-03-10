@@ -6,7 +6,7 @@
         <el-input :disabled="detailData.setType == 'view'" v-model="form.relationName" placeholder="请输入岗位名称" />
       </el-form-item>
       <el-form-item label="小屏关系卡片" prop="smallScreenCoverUrl">
-        <ImageUpload :disabled="detailData.setType == 'view'" :limit="1" :updateType="17" v-model="form.smallScreenCoverUrl" @fileChange="changeSmallScreenCoverUrl" />
+        <ImageUpload :disabled="detailData.setType == 'view'" :limit="1" :updateType="18" v-model="form.smallScreenCoverUrl" @fileChange="changeSmallScreenCoverUrl" />
       </el-form-item>
       <el-form-item label="大屏关系卡片" prop="bigScreenCoverUrl">
         <ImageUpload :disabled="detailData.setType == 'view'" :limit="1" :updateType="18" v-model="form.bigScreenCoverUrl" @fileChange="changeBigScreenCoverUrl" />
