@@ -1,7 +1,7 @@
 <template>
   <!-- 添加或修改岗位对话框 -->
   <el-dialog :title="title" v-model="open" width="600px" append-to-body :show-close="false" :close-on-click-modal="false" :draggable="true">
-    <el-form ref="postRef" :model="form" :rules="rules" label-width="120px">
+    <el-form ref="postRef" :model="form" :rules="rules" label-width="130px">
       <el-form-item label="关系名称" prop="sevenRelationId">
         <el-select v-model="form.sevenRelationId" placeholder="请选择关系名称" :disabled="detailData.setType == 'view'">
           <el-option v-for="item in plaseList" :key="item.id" :label="item.name" :value="item.id" />

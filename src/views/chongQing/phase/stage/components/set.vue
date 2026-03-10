@@ -13,8 +13,11 @@
       <el-form-item label="时间" prop="siPeriod">
         <el-input :disabled="detailData.setType == 'view'" v-model="form.siPeriod" placeholder="请输入时间" />
       </el-form-item>
-      <el-form-item label="概括词" prop="siSummaryWord">
+      <el-form-item label="概括词1" prop="siSummaryWord">
         <el-input :disabled="detailData.setType == 'view'" v-model="form.siSummaryWord" placeholder="请输入概括词" />
+      </el-form-item>
+      <el-form-item label="概括词2" prop="siSummaryWord2">
+        <el-input :disabled="detailData.setType == 'view'" v-model="form.siSummaryWord2" placeholder="请输入概括词" />
       </el-form-item>
       <el-form-item label="详细描述" prop="siDetailDescribe">
         <el-input :disabled="detailData.setType == 'view'" v-model="form.siDetailDescribe" placeholder="请输入详细描述" type="textarea" :autosize="{ minRows: 3, maxRows: 12 }" />
@@ -51,6 +54,7 @@ const data = reactive({
     siStageName: "", //关系阶段名称
     siPeriod: "", //时间
     siSummaryWord: "", //概括词
+    siSummaryWord2: "", //概括词2
     siDetailDescribe: "", //详细描述
     siSort: "", //排序
   },
@@ -58,7 +62,8 @@ const data = reactive({
     sevenRelationId: [{ required: true, message: "请选择关系名称", trigger: "change" }],
     siStageName: [{ required: true, message: "请输入关系阶段名称", trigger: ["change", "blur"] }],
     siPeriod: [{ required: true, message: "请输入时间", trigger: ["change", "blur"] }],
-    siSummaryWord: [{ required: true, message: "请输入概括词", trigger: ["change", "blur"] }],
+    siSummaryWord: [{ required: true, message: "请输入概括词1", trigger: ["change", "blur"] }],
+    siSummaryWord2: [{ required: true, message: "请输入概括词2", trigger: ["change", "blur"] }],
     siDetailDescribe: [{ required: true, message: "请输入详细描述", trigger: ["change", "blur"] }],
     siSort: [{ required: true, message: "请输入排序", trigger: ["change", "blur"] }],
   },
@@ -88,6 +93,9 @@ function show(data) {
     for (let key in form.value) {
       form.value[key] = data[key];
     }
+    const parts = form.value.siSummaryWord.split("\n"); // 按 '\n' 分割
+    form.value.siSummaryWord = parts[0] || ""; // 第一部分赋值给 siSummaryWord
+    form.value.siSummaryWord2 = parts[1] || ""; // 第二部分赋值
   }
   oldForm.value = JSON.parse(JSON.stringify(form.value));
 }
@@ -97,6 +105,8 @@ async function submitForm() {
   proxy.$refs["postRef"].validate((valid) => {
     if (valid) {
       let params = JSON.parse(JSON.stringify(form.value));
+      params.siSummaryWord = params.siSummaryWord + "\n" + params.siSummaryWord2;
+      delete params.siSummaryWord2;
       if (form.value.stageInfoId) {
         if (isSubmitData(params, oldForm.value)) {
           proxy.$modal.msgWarning("未修改无法提交");

@@ -24,9 +24,14 @@
 
     <el-table stripe v-loading="loading" :data="postList">
       <el-table-column label="关系名称" show-overflow-tooltip align="center" prop="relationName" />
-      <el-table-column label="关系阶段名称" show-overflow-tooltip align="center" prop="siStageName" min-width="105"/>
+      <el-table-column label="关系阶段名称" show-overflow-tooltip align="center" prop="siStageName" min-width="105" />
       <el-table-column label="时间" show-overflow-tooltip align="center" prop="siPeriod" />
-      <el-table-column label="概括词语" show-overflow-tooltip align="center" prop="siSummaryWord" />
+      <el-table-column label="概括词语" show-overflow-tooltip align="center" prop="siSummaryWord">
+        <template #default="scope">
+          <div>{{ scope.row.siSummaryWord.split('\n')[0] }}</div>
+          <div>{{ scope.row.siSummaryWord.split('\n')[1] }}</div>
+        </template>
+      </el-table-column>
       <el-table-column label="详细描述" show-overflow-tooltip align="center" prop="siDetailDescribe" />
       <el-table-column label="排序" show-overflow-tooltip align="center" prop="siSort" />
       <el-table-column label="操作" width="200" align="center" class-name="small-padding fixed-width">

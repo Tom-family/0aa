@@ -153,8 +153,13 @@ export function saTrendUpdate(data) {
   });
 }
 
-
-
-
+// 根据关系管理的绑定id 查询绑定的测试题
+export function selectSaTestTopic(data) {
+  return request({
+    url: "/store/backend/saSevenRelation/selectSaTestTopic",
+    method: "post",
+    data: data,
+  });
+}
 
 

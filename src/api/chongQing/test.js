@@ -80,3 +80,32 @@ export function selectTopicQuestion(data) {
     data: data,
   })
 }
+
+
+// 通过七大关系id 查询测试题信息（回显选择框版本）
+export function selectSaTestTopicInfo(data) {
+  return request({
+    url: "/store/backend/saSevenRelation/selectSaTestTopicInfo",
+    method: "post",
+    data: data,
+  })
+}
+
+// 根据主键id 修改解绑关联（解绑操作））
+export function updateSaTestTopic(data) {
+  return request({
+    url: "/store/backend/saSevenRelation/updateSaTestTopic",
+    method: "post",
+    data: data,
+  })
+}
+
+
+// 关系添加测试题
+export function insertSaTestTopic(data) {
+  return request({
+    url: "/store/backend/saSevenRelation/insertSaTestTopic",
+    method: "post",
+    data: data,
+  })
+}

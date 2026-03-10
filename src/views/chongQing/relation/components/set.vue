@@ -1,5 +1,5 @@
 <template>
-  <!-- 添加或修改岗位对话框 -->
+  <!-- 添加或编辑岗位对话框 -->
   <el-dialog :title="title" v-model="open" width="600px" append-to-body :show-close="false" :close-on-click-modal="false" :draggable="true">
     <el-form ref="postRef" :model="form" :rules="rules" label-width="120px">
       <el-form-item label="关系名称" prop="relationName">
@@ -67,7 +67,7 @@ function show(data) {
   detailData.value = data;
   // 标题
   if (data.setType == "edit") {
-    title.value = "修改关系";
+    title.value = "编辑关系";
   } else if (data.setType == "add") {
     title.value = "新增关系";
   } else {
@@ -88,7 +88,7 @@ async function submitForm() {
       let params = JSON.parse(JSON.stringify(form.value));
       if (form.value.sevenRelationId) {
         if (isSubmitData(params, oldForm.value)) {
-          proxy.$modal.msgWarning("未修改无法提交");
+          proxy.$modal.msgWarning("未编辑无法提交");
           return;
         }
         buttonLoading.value = true;
