@@ -92,6 +92,7 @@ function handleDelete(row) {
       let params = {
         bindRelationTestId: row.bindRelationTestId,
         brtIsDel: 1,
+        sevenRelationId:row.sevenRelationId
       };
       return updateSaTestTopic(params);
     })
