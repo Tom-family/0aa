@@ -23,22 +23,22 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="关系走向背景图片" prop="trendBackgroundImage">
-            <ImageUpload :disabled="detailData.setType == 'view'" :limit="1" :updateType="17" v-model="form.trendBackgroundImage" @fileChange="changeSmallScreenCoverUrl1" />
+            <ImageUpload :disabled="detailData.setType == 'view'" :limit="1" :updateType="18" v-model="form.trendBackgroundImage" @fileChange="changeSmallScreenCoverUrl1" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="漫画图片1" prop="detailImageA">
-            <ImageUpload :disabled="detailData.setType == 'view'" :limit="1" :updateType="17" v-model="form.detailImageA" @fileChange="changeSmallScreenCoverUrl2" />
+            <ImageUpload :disabled="detailData.setType == 'view'" :limit="1" :updateType="18" v-model="form.detailImageA" @fileChange="changeSmallScreenCoverUrl2" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="漫画图片2" prop="detailImageB">
-            <ImageUpload :disabled="detailData.setType == 'view'" :limit="1" :updateType="17" v-model="form.detailImageB" @fileChange="changeSmallScreenCoverUrl3" />
+            <ImageUpload :disabled="detailData.setType == 'view'" :limit="1" :updateType="18" v-model="form.detailImageB" @fileChange="changeSmallScreenCoverUrl3" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="漫画图片3" prop="detailImageC">
-            <ImageUpload :disabled="detailData.setType == 'view'" :limit="1" :updateType="17" v-model="form.detailImageC" @fileChange="changeSmallScreenCoverUrl4" />
+            <ImageUpload :disabled="detailData.setType == 'view'" :limit="1" :updateType="18" v-model="form.detailImageC" @fileChange="changeSmallScreenCoverUrl4" />
           </el-form-item>
         </el-col>
       </el-row>

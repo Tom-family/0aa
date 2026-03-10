@@ -23,7 +23,7 @@
         <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 12 }" :disabled="detailData.setType == 'view'" v-model="form.largeScreenGuidance" placeholder="请输入岗位名称" />
       </el-form-item>
       <el-form-item label="宣传图片" prop="promoImageUrl">
-        <ImageUpload :disabled="detailData.setType == 'view'" :limit="1" :updateType="17" v-model="form.promoImageUrl" @fileChange="changePromoImageUrl" />
+        <ImageUpload :disabled="detailData.setType == 'view'" :limit="1" :updateType="18" v-model="form.promoImageUrl" @fileChange="changePromoImageUrl" />
       </el-form-item>
       <el-form-item label="排序" prop="brtSort">
         <el-input-number :disabled="detailData.setType == 'view'" v-model="form.brtSort" controls-position="right" :min="0" style="width: 100%" />

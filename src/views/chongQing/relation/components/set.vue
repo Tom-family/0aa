@@ -9,7 +9,7 @@
         <ImageUpload :disabled="detailData.setType == 'view'" :limit="1" :updateType="17" v-model="form.smallScreenCoverUrl" @fileChange="changeSmallScreenCoverUrl" />
       </el-form-item>
       <el-form-item label="大屏关系卡片" prop="bigScreenCoverUrl">
-        <ImageUpload :disabled="detailData.setType == 'view'" :limit="1" :updateType="17" v-model="form.bigScreenCoverUrl" @fileChange="changeBigScreenCoverUrl" />
+        <ImageUpload :disabled="detailData.setType == 'view'" :limit="1" :updateType="18" v-model="form.bigScreenCoverUrl" @fileChange="changeBigScreenCoverUrl" />
       </el-form-item>
       <el-form-item label="顺序" prop="srSort">
         <el-input-number :disabled="detailData.setType == 'view'" v-model="form.srSort" controls-position="right" :min="0" style="width: 100%" />

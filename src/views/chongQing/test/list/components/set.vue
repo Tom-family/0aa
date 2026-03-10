@@ -7,7 +7,7 @@
           <el-input :disabled="detailData.setType == 'view'" v-model="form.saTestTopic" placeholder="请输入测评标题" />
         </el-form-item>
         <el-form-item label="封面图" prop="saTestCoverImage">
-          <ImageUpload :disabled="detailData.setType == 'view'" :limit="1" :updateType="17" v-model="form.saTestCoverImage" @fileChange="changesaTestCoverImage" />
+          <ImageUpload :disabled="detailData.setType == 'view'" :limit="1" :updateType="18" v-model="form.saTestCoverImage" @fileChange="changesaTestCoverImage" />
         </el-form-item>
         <el-form-item label="状态" prop="saTestState">
           <el-radio-group v-model="form.saTestState" :disabled="detailData.setType == 'view'"> 
