@@ -89,7 +89,6 @@ function show(data) {
   } else {
     detailData.value.saResultAnswer = {};
   }
-  console.log(detailData.value.saResultAnswer, 999);
 }
 
 function tapDetail(key, value) {

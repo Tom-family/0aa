@@ -73,7 +73,6 @@ const { form, rules, oldForm } = toRefs(data);
 // 七大关系下拉
 function getPlaseSelect() {
   saSevenRelationSelectSaSevenName().then((res) => {
-    console.log(res);
     plaseList.value = res.data;
   });
 }
@@ -105,10 +104,13 @@ async function submitForm() {
   proxy.$refs["postRef"].validate((valid) => {
     if (valid) {
       let params = JSON.parse(JSON.stringify(form.value));
+      let oldForm2 = JSON.parse(JSON.stringify(oldForm.value));
       params.siSummaryWord = params.siSummaryWord + "\n" + params.siSummaryWord2;
       delete params.siSummaryWord2;
+      oldForm2.siSummaryWord = oldForm2.siSummaryWord + "\n" + oldForm2.siSummaryWord2;
+      delete oldForm2.siSummaryWord2;
       if (form.value.stageInfoId) {
-        if (isSubmitData(params, oldForm.value)) {
+        if (isSubmitData(params, oldForm2)) {
           proxy.$modal.msgWarning("未修改无法提交");
           return;
         }

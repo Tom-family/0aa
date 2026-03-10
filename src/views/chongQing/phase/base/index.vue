@@ -107,7 +107,6 @@ function closeDia(data) {
 // 七大关系下拉
 function getPlaseSelect() {
   saSevenRelationSelectSaSevenName().then((res) => {
-    console.log(res);
     plaseList.value = res.data;
   });
 }

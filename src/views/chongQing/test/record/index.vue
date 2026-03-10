@@ -138,7 +138,6 @@ function exportAnswer(row) {
   exportTestExamResultDetail({
     saResultId: row.saResultId,
   }).then((res) => {
-    console.log(res);
     const blob = new Blob([res], { type: "application/octet-stream" });
     let filename = "";
     if (row.userAccnum) {
