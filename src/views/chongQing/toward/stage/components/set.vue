@@ -8,13 +8,13 @@
         </el-select>
       </el-form-item>
       <el-form-item label="关系阶段名称" prop="stageInfoId">
-        <el-select :disabled="detailData.setType == 'view'" v-model="form.stageInfoId" placeholder="请选择关系阶段名称">
+        <el-select :disabled="detailData.setType == 'view'" v-model="form.stageInfoId" placeholder="请选择关系阶段名称" @change="sevenStageChange">
           <el-option v-for="item in stageList" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
       <el-form-item label="关系走向" prop="tiTrendName">
         <el-select v-model="form.tiTrendName" placeholder="请选择关系走向" :disabled="detailData.setType == 'view'">
-          <el-option v-for="item in TowardType" :key="item.value" :label="item.label" :value="item.value" />
+          <el-option v-for="item in TowardTypeList" :key="item.value" :label="item.label" :value="item.value" :disabled="item.disabled" />
         </el-select>
       </el-form-item>
       <el-form-item label="关系走向概括词" prop="tiSummaryWord">
@@ -57,7 +57,7 @@
 
 <script setup>
 import { ref, reactive } from "vue";
-import { saTrendInsert, saTrendUpdate, saSevenRelationSelectSaSevenName, selectSiStageName } from "@/api/chongQing/phase.js";
+import { saTrendInsert, saTrendUpdate, saSevenRelationSelectSaSevenName, selectSiStageName, getSaTrendSelect } from "@/api/chongQing/phase.js";
 import { isSubmitData } from "@/utils/index.js";
 import { TowardType } from "@/utils/enumeration.js";
 const { proxy } = getCurrentInstance();
@@ -68,6 +68,7 @@ const buttonLoading = ref(false);
 const detailData = ref(false);
 const plaseList = ref([]);
 const stageList = ref([]);
+const TowardTypeList = ref([]);
 const data = reactive({
   oldForm: {},
   form: {
@@ -119,6 +120,7 @@ function show(data) {
       form.value[key] = data[key];
     }
     getStageSelect();
+    getTowarList();
   }
   oldForm.value = JSON.parse(JSON.stringify(form.value));
 }
@@ -180,7 +182,22 @@ function changeSmallScreenCoverUrl4() {
 
 // 关系名称change
 function sevenRelationChange() {
+  // 清楚关系阶段名称
+  stageList.value = [];
+  form.value.stageInfoId = "";
+  // 清楚关系走向
+  form.value.tiTrendName = "";
+  TowardTypeList.value = [];
   getStageSelect();
+  getTowarList();
+}
+
+// 关系阶段名称
+function sevenStageChange() {
+  // 清楚关系走向
+  form.value.tiTrendName = "";
+  TowardTypeList.value = [];
+  getTowarList();
 }
 
 // 关系阶段名称下拉
@@ -188,6 +205,27 @@ function getStageSelect() {
   selectSiStageName({ sevenRelationId: form.value.sevenRelationId }).then((res) => {
     stageList.value = res.data;
   });
+}
+
+// 获取关系走向下拉(被禁用的)
+function getTowarList() {
+  let tiTrendName = detailData.value.tiTrendName;
+  if (form.value.sevenRelationId && form.value.stageInfoId) {
+    TowardTypeList.value = JSON.parse(JSON.stringify(TowardType));
+    let params = {
+      sevenRelationId: form.value.sevenRelationId,
+      stageInfoId: form.value.stageInfoId,
+    };
+    getSaTrendSelect(params).then((res) => {
+      let disabledData = res.data;
+      if (tiTrendName) {
+        disabledData = res.data.filter((item) => item != tiTrendName);
+      }
+      TowardTypeList.value.forEach((item) => {
+        item.disabled = disabledData.includes(item.value);
+      });
+    });
+  }
 }
 
 /** 取消按钮 */

@@ -162,4 +162,13 @@ export function selectSaTestTopic(data) {
   });
 }
 
+// 获取关系走向是否禁用
+export function getSaTrendSelect(data) {
+  return request({
+    url: "/store/backend/saTrend/getSaTrendSelect",
+    method: "post",
+    data: data,
+  });
+}
+
 
