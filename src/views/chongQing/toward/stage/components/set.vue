@@ -86,7 +86,7 @@ const data = reactive({
   rules: {
     sevenRelationId: [{ required: true, message: "请选择关系名称", trigger: "change" }],
     stageInfoId: [{ required: true, message: "请选择关系阶段名称", trigger: "change" }],
-    tiTrendName: [{ required: true, message: "请选择关系走向", trigger: ["change", "blur"] }],
+    tiTrendName: [{ required: true, message: "请选择关系走向", trigger: "change" }],
     tiSummaryWord: [{ required: true, message: "请输关系走向概括词", trigger: ["change", "blur"] }],
     trendBackgroundImage: [{ required: true, message: "请选择关系走向背景图", trigger: "change" }],
     detailImageA: [{ required: true, message: "请选择漫画图片1", trigger: "change" }],
