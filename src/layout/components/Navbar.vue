@@ -105,7 +105,8 @@ function logout() {
     .then(() => {
       // userStore.logOut().then(() => {
       removeToken();
-      location.href = "/index";
+      // location.href = "/index";
+      location.href = "";
       // })
     })
     .catch(() => {});
