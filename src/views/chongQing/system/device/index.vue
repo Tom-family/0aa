@@ -147,6 +147,8 @@ function tapPass(row, status) {
       let params = {
         deviceId: row.deviceId,
         dDeviceState: status,
+        deviceStyle: row.deviceStyle,
+        storeId: row.storeId,
       };
       return saDeviceUpdate(params);
     })

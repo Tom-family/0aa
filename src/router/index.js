@@ -58,7 +58,8 @@ export const constantRoutes = [
     hidden: true,
   },
    {
-    path: "",
+    // 匹配 / 或 /index
+    path: "/:pathMatch(index)?",
     component: Layout,
     redirect: "/chongQing/relation",
     // children: [
