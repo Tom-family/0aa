@@ -149,6 +149,7 @@ function tapPass(row, status) {
         dDeviceState: status,
         deviceStyle: row.deviceStyle,
         storeId: row.storeId,
+        deviceIdentifier: row.deviceIdentifier,
       };
       return saDeviceUpdate(params);
     })
