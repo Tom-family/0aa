@@ -17,9 +17,11 @@
     <div class="tips" v-if="!form.storeTestId && isSure">请选择测试题</div>
     <el-form ref="postRef" :model="form" :rules="rules" label-width="120px">
       <el-form-item label="小屏引导词" prop="smallScreenGuidance">
+        <div class="input-tips">文字若有多段，请输入\n进行换行</div>
         <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 12 }" :disabled="detailData.setType == 'view'" v-model="form.smallScreenGuidance" placeholder="请输入岗位名称" />
       </el-form-item>
       <el-form-item label="大屏引导词" prop="largeScreenGuidance">
+        <div class="input-tips">文字若有多段，请输入\n进行换行</div>
         <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 12 }" :disabled="detailData.setType == 'view'" v-model="form.largeScreenGuidance" placeholder="请输入岗位名称" />
       </el-form-item>
       <el-form-item label="宣传图片" prop="promoImageUrl">
@@ -174,14 +176,14 @@ function cancel() {
 defineExpose({ show });
 </script>
 <style scoped lang="scss">
-.choose-box {
-  // text-align: right
-}
-
 .tips {
   color: #f56c6c;
   font-size: 12px;
   margin-top: -15px;
   margin-bottom: 15px;
+}
+.input-tips {
+  color: #9d9d9d;
+  font-size: 12px;
 }
 </style>
