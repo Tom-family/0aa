@@ -246,6 +246,18 @@ export const dynamicRoutes = [
               link: null,
             },
           },
+          {
+            name: "TestCode",
+            path: "testCode",
+            hidden: false,
+            component: "chongQing/test/code/index",
+            meta: {
+              title: "测评二维码绑定管理",
+              icon: "qrcode",
+              noCache: false,
+              link: null,
+            },
+          },
         ],
       },
       {
