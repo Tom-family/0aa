@@ -1,6 +1,7 @@
 <template>
   <div class="test-container">
     <el-form ref="postRef" :model="form" :rules="rules" label-width="90px">
+      <div class="tips">提示：添加好题目后，请联系心通通部门确定答案与算分逻辑</div>
       <el-button type="primary" style="margin-bottom: 20px" @click="addMoreTest">批量添加题目</el-button>
       <div class="text-box" v-for="(item, index) in form.testTopicQuestionsList" :key="index">
         <el-form-item label="题目编号" :prop="`testTopicQuestionsList.${index}.saQuestionSequence`" :rules="{ required: true, message: '请输入题目标题', trigger: 'change' }">
@@ -185,6 +186,10 @@ defineExpose({ getQuestionsvalid });
 <style lang="scss" scoped>
 .test-container {
   width: 100%;
+  .tips{
+    color: red;
+    font-size: 12px;
+  }
   .el-form-item {
     margin-bottom: 18px;
   }
