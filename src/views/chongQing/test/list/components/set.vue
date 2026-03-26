@@ -6,11 +6,16 @@
         <el-form-item label="测评标题" prop="saTestTopic">
           <el-input :disabled="detailData.setType == 'view'" v-model="form.saTestTopic" placeholder="请输入测评标题" />
         </el-form-item>
+        <el-form-item label="测评类型" prop="saTestWay">
+          <el-radio-group v-model="form.saTestWay" :disabled="detailData.setType == 'view'">
+            <el-radio :value="item.value" v-for="(item, index) in TestType" :key="index">{{ item.label }}</el-radio>
+          </el-radio-group>
+        </el-form-item>
         <el-form-item label="封面图" prop="saTestCoverImage">
           <ImageUpload :disabled="detailData.setType == 'view'" :limit="1" :updateType="18" v-model="form.saTestCoverImage" @fileChange="changesaTestCoverImage" />
         </el-form-item>
         <el-form-item label="状态" prop="saTestState">
-          <el-radio-group v-model="form.saTestState" :disabled="detailData.setType == 'view'"> 
+          <el-radio-group v-model="form.saTestState" :disabled="detailData.setType == 'view'">
             <el-radio :value="1">上架</el-radio>
             <el-radio :value="2">下架</el-radio>
           </el-radio-group>
@@ -37,6 +42,7 @@ import { ref, reactive } from "vue";
 import { saTestTopicInsert, saTestTopicUpdate } from "@/api/chongQing/test.js";
 import { isSubmitData } from "@/utils/index.js";
 import testItem from "./testItem.vue";
+import { TestType } from "@/utils/enumeration.js";
 const { proxy } = getCurrentInstance();
 const emit = defineEmits(["closeDia"]);
 const title = ref("新建关系");
@@ -48,6 +54,7 @@ const data = reactive({
   oldForm: {},
   form: {
     saTestState: 2, //1 上架   2下架
+    saTestWay: "",
     saTestId: "",
     saTestTopic: "", //测评标题
     saTestCoverImage: "", //封面图
@@ -55,6 +62,7 @@ const data = reactive({
   },
   rules: {
     saTestTopic: [{ required: true, message: "请输入测评标题", trigger: ["change", "blur"] }],
+    saTestWay: [{ required: true, message: "请选择测评类型", trigger: ["change", "blur"] }],
     saTestCoverImage: [{ required: true, message: "请选择封面图", trigger: ["change", "blur"] }],
     saTestSort: [{ required: true, message: "请输入排序", trigger: ["change", "blur"] }],
   },

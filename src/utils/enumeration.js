@@ -36,6 +36,18 @@ export const DeviceStatus = [
   { value: 3, label: "已拒绝" },
 ];
 
+// 测评类型
+export const TestType = [
+  { value: 5, label: "HLWP1.0" },
+  { value: 1, label: "HLWP2.0" },
+  { value: 2, label: "S70" },
+  { value: 3, label: "婚姻体检" },
+  { value: 4, label: "情感吸引力" },
+  { value: 6, label: "亲密关系" },
+  { value: 7, label: "HLWP 6-12岁" },
+  { value: 8, label: "HLWP 13-18岁" },
+];
+
 // 导出对应的回显方法
 // primary    success     info   warning   danger
 export function GetLabelByValue(data, value, valueKey = "value", labelKey = "label") {
