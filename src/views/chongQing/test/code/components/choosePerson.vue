@@ -15,7 +15,7 @@
       <el-button icon="Refresh" @click="resetQuery">重置</el-button>
     </el-form-item>
   </el-form>
-  <el-table :data="tableData" border style="width: 100%" @select="handleSelect" ref="tableRef" max-height="285">
+  <el-table v-loading="loading" :data="tableData" border style="width: 100%" @select="handleSelect" ref="tableRef" max-height="285">
     <el-table-column type="selection" width="55" />
     <el-table-column property="jobNumber" align="center" label="员工工号" show-overflow-tooltip />
     <el-table-column property="divisionName" align="center" label="员工部门" show-overflow-tooltip />
@@ -41,6 +41,7 @@ const tableRef = ref(null);
 const selectedRow = ref(null); //选中的数据
 const tableData = ref([]);
 const bindWorkAccnum = ref("");
+const loading = ref(false);
 const props = defineProps({
   sendData: {
     type: Object,
@@ -79,9 +80,12 @@ watch(
 );
 
 function getList() {
+  loading.value = true;
   queryWorkersByStore(queryParams.value).then((res) => {
     tableData.value = res.data;
     getTestList();
+  }).finally(() => {
+    loading.value = false;
   });
 }
 
