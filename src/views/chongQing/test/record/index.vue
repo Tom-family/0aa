@@ -30,9 +30,9 @@
         <template #default="scope">
           <div style="text-align: left">
             <el-button link type="primary" icon="View" @click="handleDetail(scope.row)">查看详情</el-button>
-            <el-button link type="primary" icon="View" @click="handleResult(scope.row)">查看结果</el-button>
-            <el-button style="margin-left: 0" link type="primary" icon="Document" @click="exportAnswer(scope.row)">导出答卷</el-button>
-            <el-button link type="primary" icon="Avatar" @click="handleBind(scope.row)" v-if="!scope.row.userAccnum">绑定用户</el-button>
+            <el-button link type="info" icon="View" @click="handleResult(scope.row)">查看结果</el-button>
+            <el-button style="margin-left: 0" link type="warning" icon="Document" @click="exportAnswer(scope.row)">导出答卷</el-button>
+            <el-button link type="success" icon="Avatar" @click="handleBind(scope.row)" v-if="!scope.row.userAccnum">绑定用户</el-button>
           </div>
         </template>
       </el-table-column>
