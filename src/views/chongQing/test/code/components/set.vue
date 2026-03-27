@@ -4,22 +4,24 @@
     <el-form ref="postRef" :model="form" :rules="rules" label-width="120px" :label-position="labelPosition">
       <el-form-item label="当前信息">
         <el-table :data="tableData" border style="width: 100%">
-          <el-table-column prop="name1" label="设备类型" show-overflow-tooltip align="center" />
-          <el-table-column prop="name1" label="门店名称" show-overflow-tooltip align="center" />
-          <el-table-column prop="name1" label="绑定类型" show-overflow-tooltip align="center" />
-          <el-table-column prop="name1" label="绑定员工姓名" show-overflow-tooltip align="center" width="160" />
-          <el-table-column prop="name1" label="绑定员工部门" show-overflow-tooltip align="center" width="160" />
-          <el-table-column prop="name1" label="绑定员工电话" show-overflow-tooltip align="center" width="160" />
+          <el-table-column prop="storeName" label="门店名称" show-overflow-tooltip align="center" />
+          <el-table-column prop="bindType" label="绑定类型" show-overflow-tooltip align="center" />
+          <el-table-column prop="workName" label="绑定员工姓名" show-overflow-tooltip align="center" width="190" />
+          <el-table-column prop="divisionName" label="绑定员工部门" show-overflow-tooltip align="center" width="190" />
+          <el-table-column prop="workAccnum" label="绑定员工电话" show-overflow-tooltip align="center" width="190" />
         </el-table>
       </el-form-item>
-      <el-form-item label="更换绑定类型" prop="name3">
-        <el-radio-group v-model="form.name3">
-          <el-radio :value="1">绑定至部门池</el-radio>
-          <el-radio :value="2">绑定至个人</el-radio>
+      <el-form-item label="更换绑定类型" prop="bindType">
+        <el-radio-group v-model="form.bindType" @change="isSubmit=false">
+          <el-radio :value="0">绑定至部门池</el-radio>
+          <el-radio :value="1">绑定至个人</el-radio>
         </el-radio-group>
       </el-form-item>
     </el-form>
-    <choosePerson />
+    <div v-show="form.bindType == 1">
+      <choosePerson :sendData="sendData" @closeDia="chooseData" />
+    </div>
+    <div class="tips" v-if="form.bindType == 1 && !form.jobNumber && isSubmit">请选择员工</div>
 
     <template #footer>
       <div class="dialog-footer">
@@ -32,7 +34,7 @@
 
 <script setup>
 import { ref, reactive } from "vue";
-import { saSysVersionInsert } from "@/api/chongQing/system.js";
+import { userAccNumAndWorkerBind } from "@/api/chongQing/test.js";
 import { isSubmitData } from "@/utils/index.js";
 import choosePerson from "./choosePerson.vue";
 const { proxy } = getCurrentInstance();
@@ -41,13 +43,17 @@ const open = ref(true);
 const buttonLoading = ref(false);
 const detailData = ref(false);
 const labelPosition = ref("top");
-const tableData = ref([{ name1: 15555555555 }]);
+const tableData = ref([]);
+const sendData = ref({});
+const isSubmit = ref(false);
 const data = reactive({
   form: {
-    name3: 1,
+    bindType: 1,
+    deviceId: undefined,
+    jobNumber: undefined,
   },
   rules: {
-    name3: [{ required: true, message: "请输入版本号", trigger: ["change", "blur"] }],
+    bindType: [{ required: true, message: "请输入版本号", trigger: ["change", "blur"] }],
     versionUrl: [{ required: true, message: "请输入地址", trigger: ["change", "blur"] }],
   },
 });
@@ -55,16 +61,31 @@ const { form, rules } = toRefs(data);
 
 // 打开弹窗  数据回显
 function show(data) {
-  detailData.value = data;
+  form.value.deviceId = data.deviceId;
+  sendData.value = data;
+  tableData.value = [data];
+  if (data.bindType == "部门池") {
+    form.value.bindType = 0;
+  } else {
+    form.value.bindType = 1;
+  }
 }
 
 /** 提交按钮 */
 async function submitForm() {
+  isSubmit.value = true;
+  if (!form.value.jobNumber && form.value.bindType == 1) {
+    return;
+  }
   proxy.$refs["postRef"].validate((valid) => {
     if (valid) {
       let params = JSON.parse(JSON.stringify(form.value));
+      if(params.bindType == 0){
+        delete params.jobNumber;
+      }
+      delete params.bindType;
       buttonLoading.value = true;
-      saSysVersionInsert(params)
+      userAccNumAndWorkerBind(params)
         .then((res) => {
           proxy.$modal.msgSuccess("添加成功");
           emit("closeDia", true);
@@ -76,6 +97,14 @@ async function submitForm() {
   });
 }
 
+function chooseData(data) {
+  if (data) {
+    form.value.jobNumber = data.jobNumber;
+  } else {
+    form.value.jobNumber = "";
+  }
+}
+
 /** 取消按钮 */
 function cancel() {
   emit("closeDia");
@@ -83,3 +112,11 @@ function cancel() {
 // 暴露
 defineExpose({ show });
 </script>
+
+<style scoped>
+.tips {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+}
+</style>

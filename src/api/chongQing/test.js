@@ -109,3 +109,32 @@ export function insertSaTestTopic(data) {
     data: data,
   })
 }
+
+// 二维码绑定列表
+export function querySmallScreenPage(data) {
+  return request({
+    url: "/store/backend/saTestResults/querySmallScreenPage",
+    method: "post",
+    data: data,
+  })
+}
+
+
+// 绑定二维码绑定
+export function userAccNumAndWorkerBind(data) {
+  return request({
+    url: "/store/backend/saTestResults/userAccNumAndWorkerBind",
+    method: "post",
+    data: data,
+  })
+}
+
+// 获取绑定二维码的成员信息
+export function queryWorkersByStore(data) {
+  return request({
+    url: "/store/backend/saTestResults/queryWorkersByStore",
+    method: "post",
+    data: data,
+  })
+}
+

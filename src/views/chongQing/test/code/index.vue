@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" @submit.prevent>
-      <el-form-item label="门店名称" prop="versionNum">
-        <el-input v-model="queryParams.versionNum" placeholder="请输入门店名称" clearable style="width: 200px" @keyup.enter="handleQuery" />
+      <el-form-item label="门店名称" prop="storeName">
+        <el-input v-model="queryParams.storeName" placeholder="请输入门店名称" clearable style="width: 200px" @keyup.enter="handleQuery" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
@@ -18,20 +18,19 @@
     </el-row>
 
     <el-table stripe v-loading="loading" :data="postList">
-      <el-table-column label="设备类型" show-overflow-tooltip align="center" prop="versionNum" />
-      <el-table-column label="门店名称" show-overflow-tooltip align="center" prop="versionRemark"></el-table-column>
-      <el-table-column label="绑定类型" show-overflow-tooltip align="center" prop="vcreateTime" min-width="100"></el-table-column>
+      <el-table-column label="门店名称" show-overflow-tooltip align="center" prop="storeName"></el-table-column>
+      <el-table-column label="绑定类型" show-overflow-tooltip align="center" prop="bindType" min-width="100"></el-table-column>
       <el-table-column label="绑定员工姓名" show-overflow-tooltip align="center" prop="workName" />
-      <el-table-column label="绑定员工部门" show-overflow-tooltip align="center" prop="versionState">
-        <template #default="scope">
+      <el-table-column label="绑定员工部门" show-overflow-tooltip align="center" prop="divisionName">
+        <!-- <template #default="scope">
           <el-tag type="danger" v-if="scope.row.versionState == 2">{{ GetLabelByValue(VersionStatus, scope.row.versionState) }}</el-tag>
           <el-tag type="success" v-else>{{ GetLabelByValue(VersionStatus, scope.row.versionState) }}</el-tag>
-        </template>
+        </template> -->
       </el-table-column>
-      <el-table-column label="绑定员工电话" show-overflow-tooltip align="center" prop="workName" />
+      <el-table-column label="绑定员工电话" show-overflow-tooltip align="center" prop="workAccnum" />
       <el-table-column label="操作" width="200" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-button link type="primary" icon="View" @click="handleUpdate(scope.row)">编辑</el-button>
+          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">编辑</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -44,7 +43,7 @@
 <script setup>
 import { useTemplateRef, nextTick } from "vue";
 import setDia from "./components/set.vue";
-import { saVersionQueryPage } from "@/api/chongQing/system.js";
+import { querySmallScreenPage } from "@/api/chongQing/test.js";
 import { VersionStatus, GetLabelByValue } from "@/utils/enumeration.js";
 const { proxy } = getCurrentInstance();
 
@@ -59,7 +58,7 @@ const data = reactive({
   queryParams: {
     pageNum: 1,
     pageSize: 10,
-    versionNum: undefined,
+    storeName: undefined,
   },
 });
 
@@ -67,7 +66,7 @@ const { queryParams } = toRefs(data);
 /** 查询岗位列表 */
 function getList() {
   loading.value = true;
-  saVersionQueryPage(queryParams.value).then((res) => {
+  querySmallScreenPage(queryParams.value).then((res) => {
     postList.value = res.data.records;
     total.value = res.data.total;
     loading.value = false;

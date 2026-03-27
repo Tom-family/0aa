@@ -1,69 +1,100 @@
 <template>
   <!-- 绑定个人 -->
   <el-form :model="queryParams" ref="queryRef" :inline="true" @submit.prevent>
-    <el-form-item label="员工工号" prop="name1">
-      <el-input v-model="queryParams.name1" placeholder="请输入员工工号" clearable style="width: 150px" @keyup.enter="handleQuery" />
+    <el-form-item label="员工工号" prop="jobNumber">
+      <el-input v-model="queryParams.jobNumber" placeholder="请输入员工工号" clearable style="width: 150px" @keyup.enter="handleQuery" />
     </el-form-item>
-    <el-form-item label="员工名称" prop="name2">
-      <el-input v-model="queryParams.name2" placeholder="请输入员工名称" clearable style="width: 150px" @keyup.enter="handleQuery" />
+    <el-form-item label="员工名称" prop="workName">
+      <el-input v-model="queryParams.workName" placeholder="请输入员工名称" clearable style="width: 150px" @keyup.enter="handleQuery" />
     </el-form-item>
-    <el-form-item label="员工联系电话" prop="name3">
-      <el-input v-model="queryParams.name3" placeholder="请输入员工联系电话" clearable style="width: 150px" @keyup.enter="handleQuery" />
+    <el-form-item label="员工联系电话" prop="workAccnum">
+      <el-input v-model="queryParams.workAccnum" placeholder="请输入员工联系电话" clearable style="width: 150px" @keyup.enter="handleQuery" />
     </el-form-item>
     <el-form-item>
       <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
       <el-button icon="Refresh" @click="resetQuery">重置</el-button>
     </el-form-item>
   </el-form>
-  <el-table :data="tableData" border style="width: 100%" @select="handleSelect" ref="tableRef">
-    <el-table-column type="selection" width="55" :selectable="checkSelectable" />
-    <el-table-column property="saTestTopic" align="center" label="测评标题" width="340" show-overflow-tooltip />
-    <el-table-column property="saTestState" align="center" label="状态" width="180" show-overflow-tooltip />
-    <el-table-column property="saTestCreateTime" align="center" label="创建时间" show-overflow-tooltip />
+  <el-table :data="tableData" border style="width: 100%" @select="handleSelect" ref="tableRef" max-height="285">
+    <el-table-column type="selection" width="55" />
+    <el-table-column property="jobNumber" align="center" label="员工工号" show-overflow-tooltip />
+    <el-table-column property="divisionName" align="center" label="员工部门" show-overflow-tooltip />
+    <el-table-column property="workName" align="center" label="员工名称" show-overflow-tooltip />
+    <el-table-column property="jobNumber" align="center" label="岗位" show-overflow-tooltip />
+    <el-table-column property="workAccnum" align="center" label="联系电话" show-overflow-tooltip />
+    <el-table-column property="saTestCreateTime" align="center" label="在职状态" show-overflow-tooltip>
+      <template #default="scope">
+        <el-tag type="success" v-if="scope.row.workDepart == 1">在职</el-tag>
+        <el-tag type="danger" v-if="scope.row.workDepart == 2">离职</el-tag>
+      </template>
+    </el-table-column>
   </el-table>
 </template>
 
 <script setup>
-import { ref, reactive, nextTick } from "vue";
-import { saSevenRelationSaSevenInsert, saSevenRelationSaSevenUpdate } from "@/api/chongQing/phase.js";
-import { selectSaTestTopicInfo } from "@/api/chongQing/test.js";
+import { ref, reactive, nextTick, watch } from "vue";
+import { queryWorkersByStore } from "@/api/chongQing/test.js";
 import { isSubmitData } from "@/utils/index.js";
 const { proxy } = getCurrentInstance();
 const emit = defineEmits(["closeDia"]);
-const detailData = ref(false);
 const tableRef = ref(null);
 const selectedRow = ref(null); //选中的数据
 const tableData = ref([]);
+const bindWorkAccnum = ref("");
+const props = defineProps({
+  sendData: {
+    type: Object,
+    default: () => {},
+  },
+});
 
 const data = reactive({
   queryParams: {
     pageNum: 1,
     pageSize: 10,
-    name1: undefined,
-    name2: undefined,
-    name3: undefined,
+    storeId: undefined,
+    jobNumber: undefined,
+    workName: undefined,
+    workAccnum: undefined,
   },
 });
 
 const { queryParams } = toRefs(data);
 
+// 监听 sendData 变化
+watch(
+  () => props.sendData,
+  (newVal) => {
+    if (newVal && Object.keys(newVal).length > 0) {
+      queryParams.value.storeId = newVal.storeId;
+      if (newVal.workAccnum) {
+        queryParams.value.workAccnum = newVal.workAccnum;
+        bindWorkAccnum.value = newVal.workAccnum;
+        emit("closeDia", newVal);
+      }
+      getList();
+    }
+  },
+  { deep: true, immediate: true },
+);
+
+function getList() {
+  queryWorkersByStore(queryParams.value).then((res) => {
+    tableData.value = res.data;
+    getTestList();
+  });
+}
+
 /** 搜索按钮操作 */
 function handleQuery() {
   queryParams.value.pageNum = 1;
-  console.log(1)
-  // getList();
+  getList();
 }
 
 /** 重置按钮操作 */
 function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
-}
-
-// 打开弹窗  数据回显
-function show(data) {
-  detailData.value = data;
-  getTestList();
 }
 
 // 处理单选
@@ -78,42 +109,28 @@ function handleSelect(selection, row) {
   } else {
     selectedRow.value = null;
   }
-}
-
-// 禁用名单
-function checkSelectable(row) {
-  return row.saTestIsBind != 1 || (row.saTestIsBind == 1 && row.saTestId == detailData.value.bindStoreTestId);
-}
-
-// 获取测试题
-function getTestList() {
-  selectSaTestTopicInfo({ sevenRelationId: detailData.value.sevenRelationId }).then(async (res) => {
-    tableData.value = res.data;
-    let selectedId = detailData.value.storeTestId;
-    // 在表格中找到对应的行并选中
-    if (selectedId) {
-      const row = tableData.value.find((item) => item.saTestId == selectedId);
-      if (row) {
-        await nextTick();
-        tableRef.value.clearSelection();
-        tableRef.value.toggleRowSelection(row, true);
-        selectedRow.value = row;
-      }
-    }
-  });
-}
-
-/** 提交按钮 */
-async function submitForm() {
+  if (selectedRow.value) {
+    bindWorkAccnum.value = selectedRow.value.workAccnum;
+  } else {
+    bindWorkAccnum.value = "";
+  }
   emit("closeDia", selectedRow.value);
 }
 
-/** 取消按钮 */
-function cancel() {
-  emit("closeDia");
+// 获取测试题
+async function getTestList() {
+  let selectedId = bindWorkAccnum.value;
+  // 在表格中找到对应的行并选中
+  if (selectedId) {
+    const row = tableData.value.find((item) => item.workAccnum == selectedId);
+    if (row) {
+      await nextTick();
+      tableRef.value.clearSelection();
+      tableRef.value.toggleRowSelection(row, true);
+      selectedRow.value = row;
+    }
+  }
 }
-// 暴露
-defineExpose({ show });
 </script>
 <style scoped lang="scss">
 :deep(.el-table__header-wrapper) {
