@@ -49,7 +49,7 @@ export default defineConfig(({ mode, command }) => {
         // detail: https://cli.vuejs.org/config/#devserver-proxy
         [env.VITE_APP_BASE_API + "/backend"]: {
           // target: `https://test.xintongtong.cn/backend`,
-          target: "http://192.168.110.27:8089/backend",
+          target: "http://192.168.110.29:8089/backend",
           // target: `https://s.xintongtong.cn/backend`,
           logLevel: "debug",
           changeOrigin: true,
@@ -58,7 +58,7 @@ export default defineConfig(({ mode, command }) => {
         },
         // 静态键：匹配 /dev-api/store/backend 开头的请求
         [env.VITE_APP_BASE_API + "/store/backend"]: {
-          target: "http://192.168.110.27:8090",
+          target: "http://192.168.110.29:8090",
           changeOrigin: true,
           rewrite: (path) => {
             const newPath = path.replace(env.VITE_APP_BASE_API, "");
